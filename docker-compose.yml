@@ -1,0 +1,56 @@
+version: "3.7"
+
+networks:
+  itrain-bubble:
+    external: true
+
+services:
+  flyway.itrain.dev:
+    container_name: flyway.itrain.dev
+    image: flyway/flyway
+    env_file: dev.env
+    volumes:
+      - $PWD/flyway/conf:/flyway/conf
+      - $PWD/flyway/sql:/flyway/sql
+    command: migrate
+    depends_on:
+      - postgres.itrain.dev
+    networks:
+      - itrain-bubble
+
+  postgres.itrain.dev:
+    container_name: postgres.itrain.dev
+    image: postgres
+    environment:
+      - POSTGRES_DB=itrain
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+    ports:
+      - 5432:5432
+    networks:
+      - itrain-bubble
+    depends_on:
+      - adminer.itrain.dev
+
+  adminer.itrain.dev:
+    container_name: adminer.itrain.dev
+    image: adminer
+    ports:
+      - 5433:8080
+    networks:
+      - itrain-bubble
+
+  web.itrain.dev:
+    container_name: web.itrain.dev
+    image: adoptopenjdk:11-jre-openj9
+    working_dir: /app
+    env_file: dev.env
+    ports:
+      - 5434:5000
+    volumes:
+      - $PWD/web/target/:/app
+    entrypoint: java -jar web.jar
+    depends_on:
+      - postgres.itrain.dev
+    networks:
+      - itrain-bubble

@@ -1,0 +1,10 @@
+server:
+  port: ${PORT}
+  error:
+    whitelabel:
+      enabled: false
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
