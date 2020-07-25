@@ -1,4 +1,4 @@
-package com.itrain.web;
+package com.itrain;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

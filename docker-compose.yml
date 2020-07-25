@@ -29,8 +29,6 @@ services:
       - 5432:5432
     networks:
       - itrain-bubble
-    depends_on:
-      - adminer.itrain.dev
 
   adminer.itrain.dev:
     container_name: adminer.itrain.dev

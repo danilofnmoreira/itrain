@@ -1,4 +1,4 @@
-package com.itrain.web;
+package com.itrain;
 
 import java.time.ZoneId;
 import java.time.ZoneOffset;

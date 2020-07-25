@@ -5,10 +5,11 @@ BASEDIR="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 run_maven() {
 
     docker run --rm \
+               -it \
                -w /build \
                -v $BASEDIR:/build \
                -v ~/.m2:/root/.m2 \
-               maven:3.6.3-jdk-11-openj9 $@
+               maven:3-adoptopenjdk-11-openj9 $@
 }
 
 case $1 in

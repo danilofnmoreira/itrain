@@ -2,8 +2,8 @@
 
 BASEDIR="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
-SCSS_ORIGIN="theme/scss/main.scss"
-SCSS_DESTINY="src/main/resources/static/css/main.css"
+SCSS_ORIGIN="web/src/main/resources/static/scss/main.scss"
+SCSS_DESTINY="web/src/main/resources/static/css/main.css"
 
 run_node() {
     docker run -it \
@@ -21,7 +21,6 @@ case $1 in
         run_node $BASEDIR/.. npx sass $SCSS_ORIGIN $SCSS_DESTINY --style compressed
         ;;
     *)
-        echo "Valid options are:\nwatch\ncompile"
         run_node $BASEDIR $@
         ;;
 esac
