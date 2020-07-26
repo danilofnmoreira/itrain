@@ -13,8 +13,12 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow();
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow();
+    }
+
+    public User save(User user) {
+        return userRepository.save(user);
     }
 
 }
