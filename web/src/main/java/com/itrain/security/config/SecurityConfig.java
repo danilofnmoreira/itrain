@@ -1,6 +1,7 @@
 package com.itrain.security.config;
 
-import com.itrain.security.filter.JWTAuthenticationFilter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itrain.mapper.ErrorResponseMapper;
 import com.itrain.security.filter.JWTAuthorizationFilter;
 import com.itrain.security.service.JWSService;
 import com.itrain.service.UserService;
@@ -8,6 +9,8 @@ import com.itrain.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -50,6 +53,7 @@ public class SecurityConfig {
         private final PasswordEncoder passwordEncoder;
         private final UserDetailsService userDetailsService;
         private final JWSService jwsService;
+        private final ObjectMapper objectMapper;
 
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -76,9 +80,16 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
-                    .authenticationEntryPoint((req, rsp, e) -> rsp.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.name()))
+                    .authenticationEntryPoint((request, response, authException) -> {
+                        var status = HttpStatus.UNAUTHORIZED;
+                        var errorResponse = ErrorResponseMapper.createFrom(authException, status, request.getRequestURI());
+                        var jsonResponse = objectMapper.writeValueAsString(errorResponse);
+                        response.setStatus(status.value());
+                        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                        response.getWriter().write(jsonResponse);
+                        response.flushBuffer();
+                    })
                 .and()
-                .addFilter(new JWTAuthenticationFilter("/api/v1/signin", authenticationManager(), jwsService))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager(), jwsService));
         }
 
@@ -88,6 +99,12 @@ public class SecurityConfig {
                 .ignoring()
                     //swagger
                     .antMatchers("/v2/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/swagger-resources/**", "/webjars/**");
+        }
+
+        @Bean(name = { "authenticationManager" })
+        @Override
+        public AuthenticationManager authenticationManagerBean() throws Exception {
+            return super.authenticationManagerBean();
         }
     }
 

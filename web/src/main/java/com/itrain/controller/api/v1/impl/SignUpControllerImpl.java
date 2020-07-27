@@ -19,7 +19,7 @@ public class SignUpControllerImpl implements SignUpController {
     @Override
     public void signUp(SignUpRequest request) {
 
-        log.info("sign up user {}", request);
+        log.debug("sign up user {}", request);
 
         signUpService.signUp(request);
     }

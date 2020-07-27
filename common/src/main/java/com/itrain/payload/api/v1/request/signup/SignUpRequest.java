@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.itrain.payload.api.v1.UserCredential;
+import com.itrain.payload.api.v1.UserCredentials;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ import lombok.Setter;
 public class SignUpRequest {
 
     @Valid
-    private UserCredential credentials;
+    private UserCredentials credentials;
 
     @ApiModelProperty(example = "email@email.com")
     @Email

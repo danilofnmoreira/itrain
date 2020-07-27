@@ -24,7 +24,7 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(value = SnakeCaseStrategy.class)
 @JsonInclude(value = Include.NON_EMPTY)
-public class UserCredential {
+public class UserCredentials {
 
     @ApiModelProperty(example = "username")
     @NotBlank

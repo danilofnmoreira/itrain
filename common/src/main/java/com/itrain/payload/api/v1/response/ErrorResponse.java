@@ -38,7 +38,7 @@ public class ErrorResponse {
     private LocalDateTime timestamp;
     private int status;
     private String statusError;
-    private Set<Map<String, ?>> errors;
+    private Set<Map<String, Object>> errors;
     private String message;
     private String path;
 
