@@ -4,8 +4,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import com.itrain.domain.Client;
+import com.itrain.domain.Contact;
 import com.itrain.domain.User;
 import com.itrain.repository.config.RepositoryTestConfig;
 
@@ -25,10 +28,13 @@ class UserRepositoryTest {
     private UserRepository repo;
 
     private User u1, u2;
+    private LocalDateTime now;
 
     //@formatter:off
     @BeforeEach
     void setUp() {
+
+        now = LocalDateTime.now();
 
         u1 = User
             .builder()
@@ -41,10 +47,18 @@ class UserRepositoryTest {
             .builder()
             .username("u2@email.com")
             .password("password")
-            .roles("USER")
+            .roles("USER_ROLE")
+            .client(Client
+                .builder()
+                .contact(new Contact("name", "email", "phone", true))
+                .registeredAt(now)
+                .updatedAt(now)
+                .build())
+            .registeredAt(now)
+            .updatedAt(now)
             .build();
 
-        repo.saveAll(List.of(u1, u2));
+        repo.saveAll(List.of(u2));
 
     }
     //@formatter:on
@@ -56,5 +70,15 @@ class UserRepositoryTest {
         var actual = repo.findByUsername("u1@email.com").get();
 
         assertThat(actual, is(equalTo(u1)));
+    }
+
+    @Test
+    @DisplayName(value = "")
+    void qwerty() {
+
+        var actual = repo.findByUsername("u2@email.com").get();
+
+        assertThat(actual, is(equalTo(u2)));
+        assertThat(actual.getClient(), is(equalTo(u2.getClient())));
     }
 }

@@ -1,25 +1,36 @@
 package com.itrain.domain;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.itrain.payload.converter.LocalDateTimeToStringConverter;
+import com.itrain.payload.converter.StringToLocalDatetimeConverter;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -89,9 +100,49 @@ public class User implements UserDetails {
         return AuthorityUtils.commaSeparatedStringToAuthorityList(getRoles());
     }
 
-    @Transient private boolean accountNonExpired;
-    @Transient private boolean accountNonLocked;
-    @Transient private boolean credentialsNonExpired;
-    @Transient private boolean enabled;
+    @Builder.Default @Transient private boolean accountNonExpired = true;
+    @Builder.Default @Transient private boolean accountNonLocked = true;
+    @Builder.Default @Transient private boolean credentialsNonExpired = true;
+    @Builder.Default @Transient private boolean enabled = true;
+
+    @OneToOne(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    private Client client;
+
+    public void setClient(Client client) {
+        this.client = client;
+        this.client.setUser(this);
+    }
+
+    @OneToOne(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    private Gym gym;
+
+    public void setGym(Gym gym) {
+        this.gym = gym;
+        this.gym.setUser(this);
+    }
+
+    @OneToOne(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    private PersonalTrainer personalTrainer;
+
+    public void setPersonalTrainer(PersonalTrainer personalTrainer) {
+        this.personalTrainer = personalTrainer;
+        this.personalTrainer.setUser(this);
+    }
+
+    @NotNull
+    @PastOrPresent
+    @JsonFormat(pattern = "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'", shape = Shape.STRING)
+    @JsonDeserialize(converter = StringToLocalDatetimeConverter.class)
+    @JsonSerialize(converter = LocalDateTimeToStringConverter.class)
+    @Column(name = "`registered_at`", nullable = false, updatable = false)
+    private LocalDateTime registeredAt;
+
+    @PastOrPresent
+    @NotNull
+    @JsonFormat(pattern = "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'", shape = Shape.STRING)
+    @JsonDeserialize(converter = StringToLocalDatetimeConverter.class)
+    @JsonSerialize(converter = LocalDateTimeToStringConverter.class)
+    @Column(name = "`updated_at`", nullable = false)
+    private LocalDateTime updatedAt;
 
 }
