@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itrain.security.util.JWSUtil;
+import com.itrain.security.service.JWSService;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,34 +22,30 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.log4j.Log4j2;
+import lombok.SneakyThrows;
 
-@Log4j2
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    public JWTAuthenticationFilter(String url, AuthenticationManager authenticationManager) {
+    private final JWSService jwsService;
+
+    public JWTAuthenticationFilter(String url, AuthenticationManager authenticationManager, JWSService jwsService) {
         setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(url, "POST"));
         setAuthenticationManager(authenticationManager);
+        this.jwsService = jwsService;
     }
 
+    @SneakyThrows
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
-        try {
+        var creds = new ObjectMapper().readValue(request.getInputStream(), UserCredential.class);
 
-            var creds = new ObjectMapper().readValue(request.getInputStream(), UserCredential.class);
-
-            return getAuthenticationManager()
-                .authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                        creds.getUsername(),
-                        creds.getPassword(),
-                        Collections.emptyList()));
-
-        } catch (Exception e) {
-            log.error("login error", e);
-            return null;
-        }
+        return getAuthenticationManager()
+            .authenticate(
+                new UsernamePasswordAuthenticationToken(
+                    creds.getUsername(),
+                    creds.getPassword(),
+                    Collections.emptyList()));
     }
 
     @Override
@@ -57,9 +53,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         var user = ((UserDetails) authResult.getPrincipal());
 
-        var jws = JWSUtil.createJws(user);
+        var jws = jwsService.createJws(user);
 
-        response.addHeader(HttpHeaders.AUTHORIZATION, JWSUtil.TOKEN_PREFIX + jws);
+        response.addHeader(HttpHeaders.AUTHORIZATION, JWSService.TOKEN_PREFIX + jws);
     }
 
 }

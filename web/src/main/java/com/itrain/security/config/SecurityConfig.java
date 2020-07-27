@@ -2,6 +2,7 @@ package com.itrain.security.config;
 
 import com.itrain.security.filter.JWTAuthenticationFilter;
 import com.itrain.security.filter.JWTAuthorizationFilter;
+import com.itrain.security.service.JWSService;
 import com.itrain.service.UserService;
 
 import org.springframework.context.annotation.Bean;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -47,6 +49,7 @@ public class SecurityConfig {
 
         private final PasswordEncoder passwordEncoder;
         private final UserDetailsService userDetailsService;
+        private final JWSService jwsService;
 
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -75,8 +78,16 @@ public class SecurityConfig {
                 .exceptionHandling()
                     .authenticationEntryPoint((req, rsp, e) -> rsp.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.name()))
                 .and()
-                .addFilter(new JWTAuthenticationFilter("/api/v1/signin", authenticationManager()))
-                .addFilter(new JWTAuthorizationFilter(authenticationManager()));
+                .addFilter(new JWTAuthenticationFilter("/api/v1/signin", authenticationManager(), jwsService))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(), jwsService));
+        }
+
+        @Override
+        public void configure(WebSecurity web) throws Exception {
+            web
+                .ignoring()
+                    //swagger
+                    .antMatchers("/v2/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/swagger-resources/**", "/webjars/**");
         }
     }
 

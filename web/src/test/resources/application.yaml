@@ -1,0 +1,12 @@
+itrain:
+  jws:
+    secret: Gu4AOgCslj5GK8rc6cZcEZQWzW2FxTpufYKKGHI2kxjDBGtjlYaTYiIcfhDtREQD
+    expiration-time: 864000000
+  swagger:
+    base-package: com.itrain.controller
+    app-name: ITrain App
+    app-version: 0.0.1
+    contact-name: ITrain Team
+    contact-site: https://itrain.com.br
+    contact-email: bzappcomercial@gmail.com
+    api-description: ITrain API for all
