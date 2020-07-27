@@ -1,4 +1,4 @@
-package com.itrain.security.service;
+package com.itrain.service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;

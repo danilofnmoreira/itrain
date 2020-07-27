@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.NoSuchElementException;
 
 import com.itrain.payload.api.v1.UserCredentials;
-import com.itrain.security.service.JWSService;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;

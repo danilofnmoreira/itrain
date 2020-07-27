@@ -1,16 +1,25 @@
-package com.itrain.security.config;
+package com.itrain.config;
+
+import java.io.IOException;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itrain.mapper.ErrorResponseMapper;
-import com.itrain.security.filter.JWTAuthorizationFilter;
-import com.itrain.security.service.JWSService;
+import com.itrain.service.JWSService;
 import com.itrain.service.UserService;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -18,10 +27,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 import lombok.RequiredArgsConstructor;
@@ -81,6 +92,7 @@ public class SecurityConfig {
                 .and()
                 .exceptionHandling()
                     .authenticationEntryPoint((request, response, authException) -> {
+
                         var status = HttpStatus.UNAUTHORIZED;
                         var errorResponse = ErrorResponseMapper.createFrom(authException, status, request.getRequestURI());
                         var jsonResponse = objectMapper.writeValueAsString(errorResponse);
@@ -90,7 +102,32 @@ public class SecurityConfig {
                         response.flushBuffer();
                     })
                 .and()
-                .addFilter(new JWTAuthorizationFilter(authenticationManager(), jwsService));
+                .addFilter(new BasicAuthenticationFilter(authenticationManager()) {
+
+                    @Override
+                    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+
+                        var authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+                        if (StringUtils.isBlank(authHeader) || !authHeader.startsWith(JWSService.TOKEN_PREFIX)) {
+                            chain.doFilter(request, response);
+                            return;
+                        }
+
+                        var jws = authHeader.replace(JWSService.TOKEN_PREFIX, "");
+                        var claims = jwsService.parseJws(jws);
+
+                        SecurityContextHolder
+                            .getContext()
+                            .setAuthentication(new UsernamePasswordAuthenticationToken(
+                                jwsService.getSubject(claims),
+                                null,
+                                jwsService.getAuthorities(claims)
+                            ));
+
+                        chain.doFilter(request, response);
+                    }
+                });
         }
 
         @Override
