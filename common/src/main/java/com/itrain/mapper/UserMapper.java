@@ -20,11 +20,9 @@ public class UserMapper {
 			.builder()
 			.username(credentials.getUsername())
 			.password(credentials.getPassword())
-			.email(request.getEmail())
-			.name(request.getName())
             .build();
 
-        user.setUserRoles(roles);
+        user.setRoles(roles);
 
         return user;
     }

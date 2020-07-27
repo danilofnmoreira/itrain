@@ -32,18 +32,14 @@ class UserRepositoryTest {
 
         u1 = User
             .builder()
-            .email("u1@email.com")
             .username("u1@email.com")
-            .name("u1name")
             .password("password")
             .roles("USER,ADMIN")
             .build();
 
         u2 = User
             .builder()
-            .email("u2@email.com")
             .username("u2@email.com")
-            .name("u2name")
             .password("password")
             .roles("USER")
             .build();

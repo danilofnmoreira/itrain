@@ -26,12 +26,12 @@ import lombok.ToString;
 @JsonInclude(value = Include.NON_EMPTY)
 public class UserCredentials {
 
-    @ApiModelProperty(example = "username")
+    @ApiModelProperty(example = "myusername")
     @NotBlank
-    @Size(max = 200)
+    @Size(max = 400)
     private String username;
 
-    @ApiModelProperty(example = "password")
+    @ApiModelProperty(example = "mypassword")
     @NotBlank
     @Size(max = 20)
     private String password;

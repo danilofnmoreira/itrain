@@ -1,8 +1,6 @@
 package com.itrain.domain;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
+import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,6 +11,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,33 +40,40 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonNaming(value = SnakeCaseStrategy.class)
+@JsonInclude(value = Include.NON_EMPTY)
 @Entity
 @Table(name = "`user`")
-public class User {
+@SuppressWarnings(value = { "serial" })
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
 
-    @Column(name = "`email`", unique = true)
-    private String email;
-
-    @Column(name = "`name`")
-    private String name;
-
-    @Column(name = "`username`")
+    @NotBlank
+    @Size(max = 400)
+    @Column(name = "`username`", nullable = false, length = 400, updatable = false, unique = true)
     private String username;
 
-    @Column(name = "`password`")
+    @JsonIgnore
+    @NotBlank
+    @Size(max = 20)
+    @Column(name = "`password`", nullable = false, length = 20)
     private String password;
 
-    @Column(name = "`roles`")
+    @NotBlank
+    @Column(name = "`roles`", nullable = false)
     private String roles;
 
-    public void setUserRoles(Set<UserRole> roles) {
+    public void setRoles(String roles) {
 
-        Objects.requireNonNull(roles);
+        this.roles = roles;
+    }
+
+    public void setRoles(Set<UserRole> roles) {
 
         var strRoles = roles
             .stream()
@@ -66,19 +84,14 @@ public class User {
     }
 
     @Transient
-    public Set<UserRole> getUserRoles() {
-
-        if(getRoles() == null) {
-            return Collections.emptySet();
-        }
-
-        var roleArray = getRoles().replace("ROLE_", "").split(",");
-
-        var rolesSet = new HashSet<UserRole>();
-        for(var strRole : roleArray) {
-            rolesSet.add(UserRole.getByName(strRole));
-        }
-        return rolesSet;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return AuthorityUtils.commaSeparatedStringToAuthorityList(getRoles());
     }
+
+    @Transient private boolean accountNonExpired;
+    @Transient private boolean accountNonLocked;
+    @Transient private boolean credentialsNonExpired;
+    @Transient private boolean enabled;
 
 }

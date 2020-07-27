@@ -2,7 +2,7 @@ package com.itrain.payload.api.v1.request.signup;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,13 +29,25 @@ public class SignUpRequest {
 
     @ApiModelProperty(example = "email@email.com")
     @Email
-    @NotBlank
-    @Size(max = 310)
+    @Size(max = 500)
     private String email;
 
     @ApiModelProperty(example = "fulano")
-    @NotBlank
     @Size(max = 500)
     private String name;
+
+    @ApiModelProperty(example = "55 11 94100-0172")
+    @Size(max = 30)
+    private String phone;
+
+    @ApiModelProperty(example = "true")
+    private boolean whatsapp;
+
+    @NotNull
+    private UserType userType;
+
+    public enum UserType {
+        CLIENT, GYM, PERSONAL_TRAINER
+    }
 
 }
