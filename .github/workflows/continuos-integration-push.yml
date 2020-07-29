@@ -7,10 +7,6 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            -   name: Check Environment
-                if: ${{env.SECRET == ''}}
-                run: exit 1
-
             -   name: Code Checkout
                 uses: actions/checkout@v1
 
@@ -30,4 +26,3 @@ jobs:
                 shell: bash
                 env:
                     CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-                    CODACY_API_TOKEN: ${{ secrets.CODACY_API_TOKEN }}
