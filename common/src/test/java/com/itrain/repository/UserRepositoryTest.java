@@ -41,6 +41,8 @@ class UserRepositoryTest {
             .username("u1@email.com")
             .password("password")
             .roles("USER,ADMIN")
+            .registeredAt(now)
+            .updatedAt(now)
             .build();
 
         u2 = User
@@ -58,14 +60,14 @@ class UserRepositoryTest {
             .updatedAt(now)
             .build();
 
-        repo.saveAll(List.of(u2));
+        repo.saveAll(List.of(u1, u2));
 
     }
     //@formatter:on
 
     @Test
-    @DisplayName(value = "given a email, should return them")
-    void given_a_email_should_return_them() {
+    @DisplayName(value = "when call findByUsername, should return the user with the given username")
+    void when_call_findByUsername_should_return_the_user_with_the_given_username() {
 
         var actual = repo.findByUsername("u1@email.com").get();
 
@@ -73,8 +75,8 @@ class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName(value = "")
-    void qwerty() {
+    @DisplayName(value = "when persiste a client in cascade way, both sould should be linked")
+    void when_persiste_a_client_in_cascade_way_both_sould_should_be_linked() {
 
         var actual = repo.findByUsername("u2@email.com").get();
 
