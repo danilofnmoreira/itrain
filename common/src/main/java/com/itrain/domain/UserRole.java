@@ -2,7 +2,7 @@ package com.itrain.domain;
 
 public enum UserRole {
 
-    USER, ADMIN, CLIENT, GYM, PERSONAL_TRAINER;
+    ROLE_USER, ROLE_ADMIN, ROLE_CLIENT, ROLE_GYM, ROLE_PERSONAL_TRAINER;
 
     public static UserRole getByName(String name) {
         for(var value : values()) {

@@ -12,7 +12,7 @@ services:
     volumes:
       - $PWD/flyway/conf:/flyway/conf
       - $PWD/flyway/sql:/flyway/sql
-    command: migrate
+    command: repair migrate
     depends_on:
       - postgres.itrain.dev
     networks:

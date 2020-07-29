@@ -8,12 +8,15 @@ import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
@@ -25,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -53,81 +57,57 @@ import lombok.ToString;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(value = SnakeCaseStrategy.class)
-@JsonInclude(value = Include.NON_EMPTY)
-@Entity
-@Table(name = "`user`")
+@JsonInclude(value = Include.NON_ABSENT)
 @SuppressWarnings(value = { "serial" })
+@Entity
+@Table(name = "`user`", uniqueConstraints = { @UniqueConstraint(name = "`uq_user_username`", columnNames = { "`username`" }) })
 public class User implements UserDetails {
 
+    @JsonIgnore
+    @Builder.Default
+    @Transient
+    private boolean accountNonExpired = true;
+
+    @JsonIgnore
+    @Builder.Default
+    @Transient
+    private boolean accountNonLocked = true;
+
+    @JsonIgnore
+    @Builder.Default
+    @Transient
+    private boolean credentialsNonExpired = true;
+
+    @JsonIgnore
+    @Builder.Default
+    @Transient
+    private boolean enabled = true;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_user_id")
+    // @SequenceGenerator(name = "sq_user_id", sequenceName = "`sq_user_id`", allocationSize = 1)
     @EqualsAndHashCode.Include
+    @Column(name = "`id`")
     private Long id;
 
     @NotBlank
-    @Size(max = 400)
-    @Column(name = "`username`", nullable = false, length = 400, updatable = false, unique = true)
+    @Size(max = 500)
+    @Column(name = "`username`", nullable = false, length = 500, updatable = false)
     private String username;
 
     @JsonIgnore
     @NotBlank
-    @Size(max = 20)
-    @Column(name = "`password`", nullable = false, length = 20)
+    @Size(max = 255)
+    @Column(name = "`password`", nullable = false, length = 255)
     private String password;
 
+    @JsonIgnore
     @NotBlank
-    @Column(name = "`roles`", nullable = false)
+    @Size(max = 255)
+    @Column(name = "`roles`", nullable = false, length = 255)
     private String roles;
-
-    public void setRoles(String roles) {
-
-        this.roles = roles;
-    }
-
-    public void setRoles(Set<UserRole> roles) {
-
-        var strRoles = roles
-            .stream()
-            .map(role -> "ROLE_" + role.name())
-            .collect(Collectors.toSet());
-
-        setRoles(String.join(",", strRoles));
-    }
-
-    @Transient
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthorityUtils.commaSeparatedStringToAuthorityList(getRoles());
-    }
-
-    @Builder.Default @Transient private boolean accountNonExpired = true;
-    @Builder.Default @Transient private boolean accountNonLocked = true;
-    @Builder.Default @Transient private boolean credentialsNonExpired = true;
-    @Builder.Default @Transient private boolean enabled = true;
-
-    @OneToOne(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    private Client client;
-
-    public void setClient(Client client) {
-        this.client = client;
-        this.client.setUser(this);
-    }
-
-    @OneToOne(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    private Gym gym;
-
-    public void setGym(Gym gym) {
-        this.gym = gym;
-        this.gym.setUser(this);
-    }
-
-    @OneToOne(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    private PersonalTrainer personalTrainer;
-
-    public void setPersonalTrainer(PersonalTrainer personalTrainer) {
-        this.personalTrainer = personalTrainer;
-        this.personalTrainer.setUser(this);
-    }
 
     @NotNull
     @PastOrPresent
@@ -137,12 +117,74 @@ public class User implements UserDetails {
     @Column(name = "`registered_at`", nullable = false, updatable = false)
     private LocalDateTime registeredAt;
 
-    @PastOrPresent
     @NotNull
+    @PastOrPresent
     @JsonFormat(pattern = "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'", shape = Shape.STRING)
     @JsonDeserialize(converter = StringToLocalDatetimeConverter.class)
     @JsonSerialize(converter = LocalDateTimeToStringConverter.class)
     @Column(name = "`updated_at`", nullable = false)
     private LocalDateTime updatedAt;
+
+    @ToString.Exclude
+    @OneToOne(mappedBy = "user", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    private PersonalTrainer personalTrainer;
+
+    @ToString.Exclude
+    @OneToOne(mappedBy = "user", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    private Gym gym;
+
+    @ToString.Exclude
+    @OneToOne(mappedBy = "user", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    private Client client;
+
+    @Size(max = 255)
+    @Column(name = "`profile_picture`", length = 255)
+    private String profilePicture;
+
+    public void setRoles(String roles) {
+
+        this.roles = roles;
+    }
+
+    public void setRoles(Set<UserRole> roles) {
+
+        var strRoles = roles.stream().map(UserRole::name).collect(Collectors.toSet());
+
+        setRoles(String.join(",", strRoles));
+    }
+
+    @Transient
+    @JsonInclude(value = Include.NON_NULL)
+    @JsonProperty(value = "roles")
+    public Set<UserRole> getUserRoles() {
+        return getAuthorities().stream().map(authority -> UserRole.getByName(authority.getAuthority()))
+                .collect(Collectors.toSet());
+    }
+
+    @JsonIgnore
+    @Transient
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        return AuthorityUtils.commaSeparatedStringToAuthorityList(getRoles());
+    }
+
+    public void setClient(Client client) {
+
+        this.client = client;
+        this.client.setUser(this);
+    }
+
+    public void setGym(Gym gym) {
+
+        this.gym = gym;
+        this.gym.setUser(this);
+    }
+
+    public void setPersonalTrainer(PersonalTrainer personalTrainer) {
+
+        this.personalTrainer = personalTrainer;
+        this.personalTrainer.setUser(this);
+    }
 
 }

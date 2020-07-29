@@ -23,7 +23,7 @@ public class SignUpService {
 	@Transactional
 	public void signUp(SignUpRequest request) {
 
-		var user = UserMapper.createFrom(request, Set.of(UserRole.USER));
+		var user = UserMapper.createFrom(request, Set.of(UserRole.ROLE_USER));
 
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 

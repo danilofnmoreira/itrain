@@ -40,7 +40,7 @@ class UserRepositoryTest {
             .builder()
             .username("u1@email.com")
             .password("password")
-            .roles("USER,ADMIN")
+            .roles("ROLE_USER,ROLE_ADMIN")
             .registeredAt(now)
             .updatedAt(now)
             .build();
