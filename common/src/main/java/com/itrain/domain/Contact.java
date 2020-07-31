@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
@@ -14,6 +15,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+import org.apache.commons.lang3.BooleanUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -56,6 +59,12 @@ public class Contact implements Serializable {
 
         Objects.requireNonNull(getPhone(), "A phone is mandatory when indicates a whatapp.");
         this.whatsapp = whatsapp;
+    }
+
+    @Transient
+    public boolean isWhatsapp() {
+
+        return BooleanUtils.toBoolean(whatsapp);
     }
 
 }

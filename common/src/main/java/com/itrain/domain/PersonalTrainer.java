@@ -58,7 +58,7 @@ public class PersonalTrainer implements Serializable {
 
     @EqualsAndHashCode.Include
     @Id
-    @OneToOne(cascade = { CascadeType.PERSIST })
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "`id`", foreignKey = @ForeignKey(name = "`fk_personal_trainer_id`"))
     private User user;
 
@@ -86,7 +86,7 @@ public class PersonalTrainer implements Serializable {
     private String instagram;
 
     @JsonInclude(value = Include.NON_NULL)
-    @CollectionTable(name = "`personal_trainer_gallery_pictures`", foreignKey = @ForeignKey(name = "`fk_personal_trainer_gallery_pictures_personal_trainer_id`"))
+    @CollectionTable(name = "`personal_trainer_gallery_picture`", foreignKey = @ForeignKey(name = "`fk_personal_trainer_gallery_picture_personal_trainer_id`"))
     @ElementCollection
     private Set<String> galleryPictures;
 
@@ -100,10 +100,11 @@ public class PersonalTrainer implements Serializable {
 
     @JsonInclude(value = Include.NON_NULL)
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
-    @JoinTable(name = "`personal_trainer_sports`", foreignKey = @ForeignKey(name = "`fk_personal_trainer_sports_personal_trainer_id`"), inverseForeignKey = @ForeignKey(name = "`fk_personal_trainer_sports_sport_id`"), inverseJoinColumns = { @JoinColumn(name = "`sport_id`") })
+    @JoinTable(name = "`personal_trainer_sport`", foreignKey = @ForeignKey(name = "`fk_personal_trainer_sport_personal_trainer_id`"), inverseForeignKey = @ForeignKey(name = "`fk_personal_trainer_sport_sport_id`"), inverseJoinColumns = { @JoinColumn(name = "`sport_id`") })
     private Set<Sport> sports;
 
     public void setUser(User user) {
+
         this.user = user;
         this.user.setPersonalTrainer(this);
     }

@@ -49,8 +49,8 @@ public class Sport implements Serializable {
     private Long id;
 
     @NotBlank
-    @Size(max = 255)
-    @Column(name = "`name`", nullable = false, length = 255)
+    @Size(max = 400)
+    @Column(name = "`name`", nullable = false, length = 400)
     private String name;
 
 }

@@ -85,9 +85,8 @@ public class User implements UserDetails {
 
     @Id
     @JsonIgnore
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_user_id")
-    // @SequenceGenerator(name = "sq_user_id", sequenceName = "`sq_user_id`", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_user_id")
+    @SequenceGenerator(name = "sq_user_id", sequenceName = "`sq_user_id`", allocationSize = 1)
     @EqualsAndHashCode.Include
     @Column(name = "`id`")
     private Long id;
@@ -126,19 +125,19 @@ public class User implements UserDetails {
     private LocalDateTime updatedAt;
 
     @ToString.Exclude
-    @OneToOne(mappedBy = "user", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.LAZY)
     private PersonalTrainer personalTrainer;
 
     @ToString.Exclude
-    @OneToOne(mappedBy = "user", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.LAZY)
     private Gym gym;
 
     @ToString.Exclude
-    @OneToOne(mappedBy = "user", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.LAZY)
     private Client client;
 
-    @Size(max = 255)
-    @Column(name = "`profile_picture`", length = 255)
+    @Size(max = 400)
+    @Column(name = "`profile_picture`", length = 400)
     private String profilePicture;
 
     public void setRoles(String roles) {
@@ -157,6 +156,7 @@ public class User implements UserDetails {
     @JsonInclude(value = Include.NON_NULL)
     @JsonProperty(value = "roles")
     public Set<UserRole> getUserRoles() {
+
         return getAuthorities().stream().map(authority -> UserRole.getByName(authority.getAuthority()))
                 .collect(Collectors.toSet());
     }

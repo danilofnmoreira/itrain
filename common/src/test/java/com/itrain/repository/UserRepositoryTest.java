@@ -13,12 +13,14 @@ import com.itrain.domain.User;
 import com.itrain.repository.config.RepositoryTestConfig;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
 
+@Disabled
 @DisplayName(value = "user repository test layer")
 @ContextConfiguration(classes = { RepositoryTestConfig.class })
 @DataJpaTest

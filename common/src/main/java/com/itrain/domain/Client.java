@@ -53,7 +53,7 @@ public class Client implements Serializable {
 
     @EqualsAndHashCode.Include
     @Id
-    @OneToOne(cascade = { CascadeType.PERSIST }, fetch = FetchType.LAZY)
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
     @JoinColumn(name = "`id`", foreignKey = @ForeignKey(name = "`fk_client_id`"))
     private User user;
 
@@ -80,6 +80,7 @@ public class Client implements Serializable {
     private LocalDateTime updatedAt;
 
     public void setUser(User user) {
+
         this.user = user;
         this.user.setClient(this);
     }

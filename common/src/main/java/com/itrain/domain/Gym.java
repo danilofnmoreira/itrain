@@ -59,7 +59,7 @@ public class Gym implements Serializable {
 
     @EqualsAndHashCode.Include
     @Id
-    @OneToOne(cascade = { CascadeType.PERSIST }, fetch = FetchType.LAZY)
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
     @JoinColumn(name = "`id`", foreignKey = @ForeignKey(name = "`fk_gym_id`"))
     private User user;
 
@@ -86,7 +86,7 @@ public class Gym implements Serializable {
     private LocalDateTime updatedAt;
 
     @JsonInclude(value = Include.NON_NULL)
-    @CollectionTable(name = "`gym_gallery_pictures`", foreignKey = @ForeignKey(name = "`fk_gym_gallery_pictures_gym_id`"))
+    @CollectionTable(name = "`gym_gallery_picture`", foreignKey = @ForeignKey(name = "`fk_gym_gallery_picture_gym_id`"))
     @ElementCollection
     private Set<String> galleryPictures;
 
@@ -99,11 +99,12 @@ public class Gym implements Serializable {
     private String biography;
 
     @JsonInclude(value = Include.NON_NULL)
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
-    @JoinTable(name = "`gym_sports`", foreignKey = @ForeignKey(name = "`fk_gym_sports_gym_id`"), inverseForeignKey = @ForeignKey(name = "`fk_gym_sports_sport_id`"), inverseJoinColumns = { @JoinColumn(name = "`sport_id`") })
+    @ManyToMany(cascade = { CascadeType.PERSIST })
+    @JoinTable(name = "`gym_sport`", foreignKey = @ForeignKey(name = "`fk_gym_sport_gym_id`"), inverseForeignKey = @ForeignKey(name = "`fk_gym_sport_sport_id`"), inverseJoinColumns = { @JoinColumn(name = "`sport_id`") })
     private Set<Sport> sports;
 
     public void setUser(User user) {
+
         this.user = user;
         this.user.setGym(this);
     }
