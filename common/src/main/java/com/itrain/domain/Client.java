@@ -2,10 +2,12 @@ package com.itrain.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -57,11 +59,15 @@ public class Client implements Serializable {
     @JoinColumn(name = "`id`", foreignKey = @ForeignKey(name = "`fk_client_id`"))
     private User user;
 
-    @Embedded
-    private Contact contact;
+    @JsonInclude(value = Include.NON_NULL)
+    @CollectionTable(name = "`client_contact`", foreignKey = @ForeignKey(name = "`fk_client_contact_client_id`"))
+    @ElementCollection
+    private Set<Contact> contacts;
 
-    @Embedded
-    private Address address;
+    @JsonInclude(value = Include.NON_NULL)
+    @CollectionTable(name = "`client_address`", foreignKey = @ForeignKey(name = "`fk_client_address_client_id`"))
+    @ElementCollection
+    private Set<Address> addresses;
 
     @NotNull
     @PastOrPresent

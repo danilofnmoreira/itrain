@@ -137,8 +137,8 @@ public class User implements UserDetails {
     private Client client;
 
     @Size(max = 400)
-    @Column(name = "`profile_picture`", length = 400)
-    private String profilePicture;
+    @Column(name = "`profile_picture_url`", length = 400)
+    private String profilePictureUrl;
 
     public void setRoles(String roles) {
 

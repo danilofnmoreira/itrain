@@ -8,7 +8,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -63,11 +62,15 @@ public class Gym implements Serializable {
     @JoinColumn(name = "`id`", foreignKey = @ForeignKey(name = "`fk_gym_id`"))
     private User user;
 
-    @Embedded
-    private Contact contact;
+    @JsonInclude(value = Include.NON_NULL)
+    @CollectionTable(name = "`gym_contact`", foreignKey = @ForeignKey(name = "`fk_gym_contact_gym_id`"))
+    @ElementCollection
+    private Set<Contact> contacts;
 
-    @Embedded
-    private Address address;
+    @JsonInclude(value = Include.NON_NULL)
+    @CollectionTable(name = "`gym_address`", foreignKey = @ForeignKey(name = "`fk_gym_address_gym_id`"))
+    @ElementCollection
+    private Set<Address> addresses;
 
     @NotNull
     @PastOrPresent
@@ -88,10 +91,12 @@ public class Gym implements Serializable {
     @JsonInclude(value = Include.NON_NULL)
     @CollectionTable(name = "`gym_gallery_picture`", foreignKey = @ForeignKey(name = "`fk_gym_gallery_picture_gym_id`"))
     @ElementCollection
-    private Set<String> galleryPictures;
+    @Size(max = 400)
+    @Column(name = "gallery_picture_url", length = 400, nullable = false)
+    private Set<String> galleryPicturesUrls;
 
-    @Size(max = 255)
-    @Column(name = "`instagram`", length = 255)
+    @Size(max = 400)
+    @Column(name = "`instagram`", length = 400)
     private String instagram;
 
     @Size(max = 1000)

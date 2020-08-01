@@ -8,7 +8,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.Id;
@@ -62,8 +61,10 @@ public class PersonalTrainer implements Serializable {
     @JoinColumn(name = "`id`", foreignKey = @ForeignKey(name = "`fk_personal_trainer_id`"))
     private User user;
 
-    @Embedded
-    private Contact contact;
+    @JsonInclude(value = Include.NON_NULL)
+    @CollectionTable(name = "`personal_trainer_contact`", foreignKey = @ForeignKey(name = "`fk_personal_trainer_contact_gym_id`"))
+    @ElementCollection
+    private Set<Contact> contacts;
 
     @NotNull
     @PastOrPresent
@@ -81,14 +82,16 @@ public class PersonalTrainer implements Serializable {
     @Column(name = "`updated_at`", nullable = false)
     private LocalDateTime updatedAt;
 
-    @Size(max = 255)
-    @Column(name = "`instagram`", length = 255)
+    @Size(max = 400)
+    @Column(name = "`instagram`", length = 400)
     private String instagram;
 
     @JsonInclude(value = Include.NON_NULL)
     @CollectionTable(name = "`personal_trainer_gallery_picture`", foreignKey = @ForeignKey(name = "`fk_personal_trainer_gallery_picture_personal_trainer_id`"))
     @ElementCollection
-    private Set<String> galleryPictures;
+    @Size(max = 400)
+    @Column(name = "gallery_picture_url", length = 400, nullable = false)
+    private Set<String> galleryPicturesUrls;
 
     @Size(max = 300)
     @Column(name = "`acting_city`", length = 300)
@@ -99,7 +102,7 @@ public class PersonalTrainer implements Serializable {
     private String biography;
 
     @JsonInclude(value = Include.NON_NULL)
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
+    @ManyToMany(cascade = { CascadeType.PERSIST })
     @JoinTable(name = "`personal_trainer_sport`", foreignKey = @ForeignKey(name = "`fk_personal_trainer_sport_personal_trainer_id`"), inverseForeignKey = @ForeignKey(name = "`fk_personal_trainer_sport_sport_id`"), inverseJoinColumns = { @JoinColumn(name = "`sport_id`") })
     private Set<Sport> sports;
 
