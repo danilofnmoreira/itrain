@@ -90,7 +90,7 @@ public class PersonalTrainer implements Serializable {
     @CollectionTable(name = "`personal_trainer_gallery_picture`", foreignKey = @ForeignKey(name = "`fk_personal_trainer_gallery_picture_personal_trainer_id`"))
     @ElementCollection
     @Size(max = 400)
-    @Column(name = "gallery_picture_url", length = 400, nullable = false)
+    @Column(name = "`gallery_picture_url`", length = 400, nullable = false)
     private Set<String> galleryPicturesUrls;
 
     @Size(max = 300)

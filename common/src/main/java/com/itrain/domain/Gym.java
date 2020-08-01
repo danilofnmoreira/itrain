@@ -92,7 +92,7 @@ public class Gym implements Serializable {
     @CollectionTable(name = "`gym_gallery_picture`", foreignKey = @ForeignKey(name = "`fk_gym_gallery_picture_gym_id`"))
     @ElementCollection
     @Size(max = 400)
-    @Column(name = "gallery_picture_url", length = 400, nullable = false)
+    @Column(name = "`gallery_picture_url`", length = 400, nullable = false)
     private Set<String> galleryPicturesUrls;
 
     @Size(max = 400)
