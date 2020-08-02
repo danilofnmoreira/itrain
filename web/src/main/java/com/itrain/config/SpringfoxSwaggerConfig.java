@@ -1,7 +1,7 @@
 package com.itrain.config;
 
 import com.fasterxml.classmate.types.ResolvedObjectType;
-import com.itrain.payload.api.v1.response.ErrorResponse;
+import com.itrain.common.payload.ErrorResponse;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;

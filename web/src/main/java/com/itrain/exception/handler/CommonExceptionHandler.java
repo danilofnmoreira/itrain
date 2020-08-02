@@ -2,8 +2,8 @@ package com.itrain.exception.handler;
 
 import java.util.NoSuchElementException;
 
-import com.itrain.mapper.ErrorResponseMapper;
-import com.itrain.payload.api.v1.response.ErrorResponse;
+import com.itrain.common.mapper.ErrorResponseMapper;
+import com.itrain.common.payload.ErrorResponse;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

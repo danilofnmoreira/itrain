@@ -14,67 +14,45 @@
   <dependencies>
 
     <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-boot-starter</artifactId>
+      <version>3.0.0</version>
+    </dependency>
+
+    <dependency>
       <groupId>com.itrain</groupId>
-      <artifactId>common</artifactId>
+      <artifactId>itrain-common</artifactId>
       <version>1.0</version>
     </dependency>
 
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+      <groupId>com.itrain</groupId>
+      <artifactId>ms-itrain-auth</artifactId>
+      <version>1.0</version>
     </dependency>
 
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-actuator</artifactId>
+      <groupId>com.itrain</groupId>
+      <artifactId>ms-itrain-sport</artifactId>
+      <version>1.0</version>
     </dependency>
 
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-security</artifactId>
+      <groupId>com.itrain</groupId>
+      <artifactId>ms-itrain-client</artifactId>
+      <version>1.0</version>
     </dependency>
 
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
+      <groupId>com.itrain</groupId>
+      <artifactId>ms-itrain-gym</artifactId>
+      <version>1.0</version>
     </dependency>
 
     <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>io.rest-assured</groupId>
-      <artifactId>rest-assured</artifactId>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>com.sun.xml.bind</groupId>
-          <artifactId>jaxb-osgi</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>io.jsonwebtoken</groupId>
-      <artifactId>jjwt-api</artifactId>
-      <version>0.11.2</version>
-    </dependency>
-
-    <dependency>
-      <groupId>io.jsonwebtoken</groupId>
-      <artifactId>jjwt-impl</artifactId>
-      <version>0.11.2</version>
-      <scope>runtime</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>io.jsonwebtoken</groupId>
-      <artifactId>jjwt-jackson</artifactId>
-      <version>0.11.2</version>
-      <scope>runtime</scope>
+      <groupId>com.itrain</groupId>
+      <artifactId>ms-itrain-personal-trainer</artifactId>
+      <version>1.0</version>
     </dependency>
 
   </dependencies>
