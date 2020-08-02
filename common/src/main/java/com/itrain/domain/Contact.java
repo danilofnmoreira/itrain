@@ -1,7 +1,6 @@
 package com.itrain.domain;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -54,12 +53,6 @@ public class Contact implements Serializable {
     @JsonProperty(value = "is_whatsapp")
     @Column(name = "`is_whatsapp`")
     private Boolean whatsapp;
-
-    public void setWhatsapp(Boolean whatsapp) {
-
-        Objects.requireNonNull(getPhone(), "A phone is mandatory when indicates a whatapp.");
-        this.whatsapp = whatsapp;
-    }
 
     @Transient
     public boolean isWhatsapp() {

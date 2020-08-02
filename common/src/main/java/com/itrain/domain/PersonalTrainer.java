@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -55,11 +56,14 @@ import lombok.ToString;
 @Table(name = "`personal_trainer`")
 public class PersonalTrainer implements Serializable {
 
+    @MapsId
     @EqualsAndHashCode.Include
-    @Id
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "`id`", foreignKey = @ForeignKey(name = "`fk_personal_trainer_id`"))
     private User user;
+
+    @Id
+    private Long id;
 
     @JsonInclude(value = Include.NON_NULL)
     @CollectionTable(name = "`personal_trainer_contact`", foreignKey = @ForeignKey(name = "`fk_personal_trainer_contact_gym_id`"))
@@ -89,16 +93,17 @@ public class PersonalTrainer implements Serializable {
     @JsonInclude(value = Include.NON_NULL)
     @CollectionTable(name = "`personal_trainer_gallery_picture`", foreignKey = @ForeignKey(name = "`fk_personal_trainer_gallery_picture_personal_trainer_id`"))
     @ElementCollection
-    @Size(max = 400)
-    @Column(name = "`gallery_picture_url`", length = 400, nullable = false)
-    private Set<String> galleryPicturesUrls;
+    @Column(name = "`gallery_picture_url`", length = 2500, nullable = false)
+    private Set<@Size(max = 2500) String> galleryPicturesUrls;
 
-    @Size(max = 300)
-    @Column(name = "`acting_city`", length = 300)
-    private String actingCity;
+    @JsonInclude(value = Include.NON_NULL)
+    @CollectionTable(name = "`personal_trainer_acting_city`", foreignKey = @ForeignKey(name = "`fk_personal_trainer_acting_city_personal_trainer_id`"))
+    @ElementCollection
+    @Column(name = "`acting_city`", length = 500, nullable = false)
+    private Set<@Size(max = 500) String> actingCities;
 
-    @Size(max = 1000)
-    @Column(name = "`biography`", length = 1000)
+    @Size(max = 2000)
+    @Column(name = "`biography`", length = 2000)
     private String biography;
 
     @JsonInclude(value = Include.NON_NULL)
@@ -106,7 +111,7 @@ public class PersonalTrainer implements Serializable {
     @JoinTable(name = "`personal_trainer_sport`", foreignKey = @ForeignKey(name = "`fk_personal_trainer_sport_personal_trainer_id`"), inverseForeignKey = @ForeignKey(name = "`fk_personal_trainer_sport_sport_id`"), inverseJoinColumns = { @JoinColumn(name = "`sport_id`") })
     private Set<Sport> sports;
 
-    public void setUser(User user) {
+    public void addUser(User user) {
 
         this.user = user;
         this.user.setPersonalTrainer(this);

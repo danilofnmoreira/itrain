@@ -19,7 +19,7 @@ import io.swagger.annotations.ApiOperation;
 public interface SignUpController {
 
     @ApiOperation(value = "sign up the given user")
-    @ResponseStatus(code = HttpStatus.OK)
+    @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(path = { "/signup" },
         consumes = { MediaType.APPLICATION_JSON_VALUE })
     void signUp(@Valid @RequestBody SignUpRequest request);

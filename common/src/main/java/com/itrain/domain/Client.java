@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -53,11 +54,14 @@ import lombok.ToString;
 @Table(name = "`client`")
 public class Client implements Serializable {
 
+    @MapsId
     @EqualsAndHashCode.Include
-    @Id
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
     @JoinColumn(name = "`id`", foreignKey = @ForeignKey(name = "`fk_client_id`"))
     private User user;
+
+    @Id
+    private Long id;
 
     @JsonInclude(value = Include.NON_NULL)
     @CollectionTable(name = "`client_contact`", foreignKey = @ForeignKey(name = "`fk_client_contact_client_id`"))
@@ -85,7 +89,7 @@ public class Client implements Serializable {
     @Column(name = "`updated_at`", nullable = false)
     private LocalDateTime updatedAt;
 
-    public void setUser(User user) {
+    public void addUser(User user) {
 
         this.user = user;
         this.user.setClient(this);

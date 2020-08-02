@@ -135,7 +135,7 @@ public class SecurityConfig {
             web
                 .ignoring()
                     //swagger
-                    .antMatchers("/v2/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/swagger-resources/**", "/webjars/**");
+                    .antMatchers("/", "/v2/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/swagger-resources/**", "/webjars/**");
         }
 
         @Bean(name = { "authenticationManager" })

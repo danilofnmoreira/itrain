@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiOperation;
 public interface SignInController {
 
     @ApiOperation(value = "sign in the given user")
-    @ResponseStatus(code = HttpStatus.OK)
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @PostMapping(path = { "/signin" },
         consumes = { MediaType.APPLICATION_JSON_VALUE })
     ResponseEntity<Object> signIn(@Valid @RequestBody UserCredentials credentials);

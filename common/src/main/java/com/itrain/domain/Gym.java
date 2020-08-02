@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -56,11 +57,14 @@ import lombok.ToString;
 @Table(name = "`gym`")
 public class Gym implements Serializable {
 
+    @MapsId
     @EqualsAndHashCode.Include
-    @Id
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
     @JoinColumn(name = "`id`", foreignKey = @ForeignKey(name = "`fk_gym_id`"))
     private User user;
+
+    @Id
+    private Long id;
 
     @JsonInclude(value = Include.NON_NULL)
     @CollectionTable(name = "`gym_contact`", foreignKey = @ForeignKey(name = "`fk_gym_contact_gym_id`"))
@@ -91,16 +95,15 @@ public class Gym implements Serializable {
     @JsonInclude(value = Include.NON_NULL)
     @CollectionTable(name = "`gym_gallery_picture`", foreignKey = @ForeignKey(name = "`fk_gym_gallery_picture_gym_id`"))
     @ElementCollection
-    @Size(max = 400)
-    @Column(name = "`gallery_picture_url`", length = 400, nullable = false)
-    private Set<String> galleryPicturesUrls;
+    @Column(name = "`gallery_picture_url`", length = 2500, nullable = false)
+    private Set<@Size(max = 2500) String> galleryPicturesUrls;
 
     @Size(max = 400)
     @Column(name = "`instagram`", length = 400)
     private String instagram;
 
-    @Size(max = 1000)
-    @Column(name = "`biography`", length = 1000)
+    @Size(max = 2000)
+    @Column(name = "`biography`", length = 2000)
     private String biography;
 
     @JsonInclude(value = Include.NON_NULL)
@@ -108,7 +111,7 @@ public class Gym implements Serializable {
     @JoinTable(name = "`gym_sport`", foreignKey = @ForeignKey(name = "`fk_gym_sport_gym_id`"), inverseForeignKey = @ForeignKey(name = "`fk_gym_sport_sport_id`"), inverseJoinColumns = { @JoinColumn(name = "`sport_id`") })
     private Set<Sport> sports;
 
-    public void setUser(User user) {
+    public void addUser(User user) {
 
         this.user = user;
         this.user.setGym(this);

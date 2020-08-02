@@ -14,16 +14,16 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-public class SignInControllerImpl implements SignInController {
+public final class SignInControllerImpl implements SignInController {
 
     private final SignInService signInController;
 
     @Override
-    public ResponseEntity<Object> signIn(UserCredentials credentials) {
+    public ResponseEntity<Object> signIn(final UserCredentials credentials) {
 
         log.debug("sign in user {}", credentials);
 
-        var token = signInController.signIn(credentials);
+        final var token = signInController.signIn(credentials);
 
         return ResponseEntity.noContent().header(HttpHeaders.AUTHORIZATION, token).build();
     }

@@ -98,8 +98,8 @@ public class User implements UserDetails {
 
     @JsonIgnore
     @NotBlank
-    @Size(max = 255)
-    @Column(name = "`password`", nullable = false, length = 255)
+    @Size(max = 500)
+    @Column(name = "`password`", nullable = false, length = 500)
     private String password;
 
     @JsonIgnore
@@ -136,8 +136,8 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.LAZY)
     private Client client;
 
-    @Size(max = 400)
-    @Column(name = "`profile_picture_url`", length = 400)
+    @Size(max = 2500)
+    @Column(name = "`profile_picture_url`", length = 2500)
     private String profilePictureUrl;
 
     public void setRoles(String roles) {
@@ -169,19 +169,19 @@ public class User implements UserDetails {
         return AuthorityUtils.commaSeparatedStringToAuthorityList(getRoles());
     }
 
-    public void setClient(Client client) {
+    public void addClient(Client client) {
 
         this.client = client;
         this.client.setUser(this);
     }
 
-    public void setGym(Gym gym) {
+    public void addGym(Gym gym) {
 
         this.gym = gym;
         this.gym.setUser(this);
     }
 
-    public void setPersonalTrainer(PersonalTrainer personalTrainer) {
+    public void addPersonalTrainer(PersonalTrainer personalTrainer) {
 
         this.personalTrainer = personalTrainer;
         this.personalTrainer.setUser(this);

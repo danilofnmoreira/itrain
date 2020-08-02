@@ -12,12 +12,12 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-public class SignUpControllerImpl implements SignUpController {
+public final class SignUpControllerImpl implements SignUpController {
 
     private final SignUpService signUpService;
 
     @Override
-    public void signUp(SignUpRequest request) {
+    public void signUp(final SignUpRequest request) {
 
         log.debug("sign up user {}", request);
 

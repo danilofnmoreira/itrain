@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.itrain.payload.api.v1.UserCredentials;
@@ -25,6 +26,7 @@ import lombok.Setter;
 public class SignUpRequest {
 
     @Valid
+    @NotNull
     private UserCredentials credentials;
 
     @ApiModelProperty(example = "email@email.com")
@@ -36,12 +38,13 @@ public class SignUpRequest {
     @Size(max = 500)
     private String name;
 
-    @ApiModelProperty(example = "55 11 94100-0172")
-    @Size(max = 30)
+    @ApiModelProperty(example = "55 11 90000-9999")
+    @Size(max = 50)
     private String phone;
 
     @ApiModelProperty(example = "true")
-    private boolean whatsapp;
+    @JsonProperty(value = "is_whatsapp")
+    private Boolean whatsapp;
 
     @NotNull
     private UserType userType;
