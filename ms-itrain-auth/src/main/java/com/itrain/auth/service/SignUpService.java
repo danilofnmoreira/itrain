@@ -31,19 +31,19 @@ public class SignUpService {
 
 			case CLIENT:
 
-				user.addRoles(Set.of(UserRole.CLIENT, UserRole.USER));
+				user.addRoles(Set.of(UserRole.ROLE_CLIENT, UserRole.ROLE_USER));
 				userService.save(user);
 				break;
 
 			case GYM:
 
-				user.addRoles(Set.of(UserRole.GYM, UserRole.USER));
+				user.addRoles(Set.of(UserRole.ROLE_GYM, UserRole.ROLE_USER));
 				userService.save(user);
 				break;
 
 			case PERSONAL_TRAINER:
 
-				user.addRoles(Set.of(UserRole.PERSONAL_TRAINER, UserRole.USER));
+				user.addRoles(Set.of(UserRole.ROLE_PERSONAL_TRAINER, UserRole.ROLE_USER));
 				userService.save(user);
 				break;
 		}

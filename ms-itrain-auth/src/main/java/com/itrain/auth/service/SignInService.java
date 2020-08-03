@@ -4,12 +4,12 @@ import java.util.Collections;
 import java.util.NoSuchElementException;
 
 import com.itrain.auth.controller.v1.model.UserCredentials;
+import com.itrain.auth.domain.User;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -54,7 +54,7 @@ public class SignInService {
 
     private String onSuccessfulAuthentication(Authentication authResult) {
 
-        var user = ((UserDetails) authResult.getPrincipal());
+        var user = (User) authResult.getPrincipal();
 
         var jws = jwsService.createJws(user);
 

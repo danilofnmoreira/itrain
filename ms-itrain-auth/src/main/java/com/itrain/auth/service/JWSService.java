@@ -2,10 +2,16 @@ package com.itrain.auth.service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.itrain.auth.domain.User;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
@@ -31,11 +37,13 @@ public class JWSService {
         this.signKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String createJws(UserDetails user) {
+    public String createJws(User user) {
 
         return Jwts
             .builder()
             .setSubject(user.getUsername())
+            .claim("rol", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+            .claim("uid", user.getId())
             .setIssuedAt(new Date())
             .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
             .signWith(getSignKey())
@@ -54,6 +62,18 @@ public class JWSService {
 
     public String getSubject(Claims claims) {
         return claims.getSubject();
+    }
+
+    public Long getUserId(Claims claims) {
+        return Long.parseLong(claims.get("uid").toString());
+    }
+
+    @SuppressWarnings(value = { "unchecked" })
+    public List<SimpleGrantedAuthority> getAuthorities(Claims claims) {
+        return ((ArrayList<String>) claims.get("rol"))
+            .stream()
+            .map(SimpleGrantedAuthority::new)
+            .collect(Collectors.toList());
     }
 
 }

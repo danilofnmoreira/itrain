@@ -26,9 +26,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,16 +46,7 @@ public class SecurityConfig {
     @Bean
     UserDetailsService userDetailsService(UserService userService) {
 
-        return username -> {
-
-            var found = userService.findByUsername(username);
-
-            return User
-                .withUsername(found.getUsername())
-                .password(found.getPassword())
-                .roles(found.getRoles().split(","))
-                .build();
-        };
+        return username -> userService.findByUsername(username);
     }
 
     @Configuration
@@ -69,7 +58,6 @@ public class SecurityConfig {
         private final UserDetailsService userDetailsService;
         private final JWSService jwsService;
         private final ObjectMapper objectMapper;
-        private final UserService userService;
 
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -121,15 +109,13 @@ public class SecurityConfig {
 
                         var jws = authHeader.replace(JWSService.TOKEN_PREFIX, "");
                         var claims = jwsService.parseJws(jws);
-                        var username = jwsService.getSubject(claims);
-                        var user = userService.findByUsername(username);
 
                         SecurityContextHolder
                             .getContext()
                             .setAuthentication(new UsernamePasswordAuthenticationToken(
-                                user,
+                                jwsService.getUserId(claims),
                                 null,
-                                AuthorityUtils.commaSeparatedStringToAuthorityList(user.getRoles())
+                                jwsService.getAuthorities(claims)
                             ));
 
                         chain.doFilter(request, response);

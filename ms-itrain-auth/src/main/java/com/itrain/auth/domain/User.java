@@ -1,7 +1,7 @@
 package com.itrain.auth.domain;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -31,6 +32,10 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itrain.common.converter.LocalDateTimeToStringConverter;
 import com.itrain.common.converter.StringToLocalDatetimeConverter;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -53,7 +58,27 @@ import lombok.ToString;
 @SuppressWarnings(value = { "serial" })
 @Entity
 @Table(name = "`user`", uniqueConstraints = { @UniqueConstraint(name = "`uq_user_username`", columnNames = { "`username`" }) })
-public class User implements Serializable {
+public class User implements UserDetails {
+
+    @JsonIgnore
+    @Builder.Default
+    @Transient
+    private boolean accountNonExpired = true;
+
+    @JsonIgnore
+    @Builder.Default
+    @Transient
+    private boolean accountNonLocked = true;
+
+    @JsonIgnore
+    @Builder.Default
+    @Transient
+    private boolean credentialsNonExpired = true;
+
+    @JsonIgnore
+    @Builder.Default
+    @Transient
+    private boolean enabled = true;
 
     @Id
     @JsonIgnore
@@ -107,6 +132,14 @@ public class User implements Serializable {
         var currentRoles = Objects.requireNonNullElse(getRoles(), "");
 
         setRoles(currentRoles + "," + moreRoles);
+    }
+
+    @JsonIgnore
+    @Transient
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        return AuthorityUtils.commaSeparatedStringToAuthorityList(getRoles());
     }
 
 }
