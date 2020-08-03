@@ -12,17 +12,37 @@
   <artifactId>jacoco</artifactId>
 
   <properties>
-    <build.directory.api>../web/target</build.directory.api>
-    <build.directory.common>../common/target</build.directory.common>
+    <build.directory.web>../web/target</build.directory.web>
+    <build.directory.itrain-common>../itrain-common/target</build.directory.itrain-common>
+    <build.directory.ms-itrain-auth>../ms-itrain-auth/target</build.directory.ms-itrain-auth>
+    <build.directory.ms-itrain-sport>../ms-itrain-sport/target</build.directory.ms-itrain-sport>
+    <build.directory.ms-itrain-client>../ms-itrain-client/target</build.directory.ms-itrain-client>
+    <build.directory.ms-itrain-gym>../ms-itrain-gym/target</build.directory.ms-itrain-gym>
+    <build.directory.ms-itrain-personal-trainer>../ms-itrain-personal-trainer/target</build.directory.ms-itrain-personal-trainer>
 
-    <classes.directory.api>../web/target/classes</classes.directory.api>
-    <classes.directory.common>../common/target/classes</classes.directory.common>
+    <classes.directory.web>../web/target/classes</classes.directory.web>
+    <classes.directory.itrain-common>../itrain-common/target/classes</classes.directory.itrain-common>
+    <classes.directory.ms-itrain-auth>../ms-itrain-auth/target/classes</classes.directory.ms-itrain-auth>
+    <classes.directory.ms-itrain-sport>../ms-itrain-sport/target/classes</classes.directory.ms-itrain-sport>
+    <classes.directory.ms-itrain-client>../ms-itrain-client/target/classes</classes.directory.ms-itrain-client>
+    <classes.directory.ms-itrain-gym>../ms-itrain-gym/target/classes</classes.directory.ms-itrain-gym>
+    <classes.directory.ms-itrain-personal-trainer>../ms-itrain-personal-trainer/target/classes</classes.directory.ms-itrain-personal-trainer>
 
-    <sources.directory.api>../web/src/main/java</sources.directory.api>
-    <sources.directory.common>../common/src/main/java</sources.directory.common>
+    <sources.directory.web>../web/src/main/java</sources.directory.web>
+    <sources.directory.itrain-common>../itrain-common/src/main/java</sources.directory.itrain-common>
+    <sources.directory.ms-itrain-auth>../ms-itrain-auth/src/main/java</sources.directory.ms-itrain-auth>
+    <sources.directory.ms-itrain-sport>../ms-itrain-sport/src/main/java</sources.directory.ms-itrain-sport>
+    <sources.directory.ms-itrain-client>../ms-itrain-client/src/main/java</sources.directory.ms-itrain-client>
+    <sources.directory.ms-itrain-gym>../ms-itrain-gym/src/main/java</sources.directory.ms-itrain-gym>
+    <sources.directory.ms-itrain-personal-trainer>../ms-itrain-personal-trainer/src/main/java</sources.directory.ms-itrain-personal-trainer>
 
-    <generated-sources.directory.api>../web/target/generated-sources/annotations</generated-sources.directory.api>
-    <generated-sources.directory.common>../common/target/generated-sources/annotations</generated-sources.directory.common>
+    <generated-sources.directory.web>../web/target/generated-sources/annotations</generated-sources.directory.web>
+    <generated-sources.directory.itrain-common>../itrain-common/target/generated-sources/annotations</generated-sources.directory.itrain-common>
+    <generated-sources.directory.ms-itrain-auth>../ms-itrain-auth/target/generated-sources/annotations</generated-sources.directory.ms-itrain-auth>
+    <generated-sources.directory.ms-itrain-sport>../ms-itrain-sport/target/generated-sources/annotations</generated-sources.directory.ms-itrain-sport>
+    <generated-sources.directory.ms-itrain-client>../ms-itrain-client/target/generated-sources/annotations</generated-sources.directory.ms-itrain-client>
+    <generated-sources.directory.ms-itrain-gym>../ms-itrain-gym/target/generated-sources/annotations</generated-sources.directory.ms-itrain-gym>
+    <generated-sources.directory.ms-itrain-personal-trainer>../ms-itrain-personal-trainer/target/generated-sources/annotations</generated-sources.directory.ms-itrain-personal-trainer>
   </properties>
 
   <build>
@@ -73,22 +93,33 @@
                 <mkdir dir="${basedir}/target/coverage-report" />
                 <report>
                   <executiondata>
-                    <fileset dir="${build.directory.api}">
-                      <include name="jacoco.exec" />
-                    </fileset>
-                    <fileset dir="${build.directory.common}">
-                      <include name="jacoco.exec" />
-                    </fileset>
+                    <fileset dir="${build.directory.web}"><include name="jacoco.exec" /></fileset>
+                    <fileset dir="${build.directory.itrain-common}"><include name="jacoco.exec" /></fileset>
+                    <fileset dir="${build.directory.ms-itrain-auth}"><include name="jacoco.exec" /></fileset>
+                    <fileset dir="${build.directory.ms-itrain-sport}"><include name="jacoco.exec" /></fileset>
+                    <fileset dir="${build.directory.ms-itrain-client}"><include name="jacoco.exec" /></fileset>
+                    <fileset dir="${build.directory.ms-itrain-gym}"><include name="jacoco.exec" /></fileset>
+                    <fileset dir="${build.directory.ms-itrain-personal-trainer}"><include name="jacoco.exec" /></fileset>
                   </executiondata>
                   <structure name="jacoco-multi Coverage Project">
                     <group name="jacoco-multi">
                       <classfiles>
-                        <fileset dir="${classes.directory.api}" />
-                        <fileset dir="${classes.directory.common}" />
+                        <fileset dir="${classes.directory.web}" />
+                        <fileset dir="${classes.directory.itrain-common}" />
+                        <fileset dir="${classes.directory.ms-itrain-auth}" />
+                        <fileset dir="${classes.directory.ms-itrain-sport}" />
+                        <fileset dir="${classes.directory.ms-itrain-client}" />
+                        <fileset dir="${classes.directory.ms-itrain-gym}" />
+                        <fileset dir="${classes.directory.ms-itrain-personal-trainer}" />
                       </classfiles>
                       <sourcefiles encoding="UTF-8">
-                        <fileset dir="${sources.directory.api}" />
-                        <fileset dir="${sources.directory.common}" />
+                        <fileset dir="${sources.directory.web}" />
+                        <fileset dir="${sources.directory.itrain-common}" />
+                        <fileset dir="${sources.directory.ms-itrain-auth}" />
+                        <fileset dir="${sources.directory.ms-itrain-sport}" />
+                        <fileset dir="${sources.directory.ms-itrain-client}" />
+                        <fileset dir="${sources.directory.ms-itrain-gym}" />
+                        <fileset dir="${sources.directory.ms-itrain-personal-trainer}" />
                       </sourcefiles>
                     </group>
                   </structure>
