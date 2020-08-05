@@ -1,14 +1,15 @@
 package com.itrain.client.domain;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.CollectionTable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
@@ -55,13 +56,11 @@ public class Client {
     private Long id;
 
     @JsonInclude(value = Include.NON_NULL)
-    @CollectionTable(name = "`client_contact`", foreignKey = @ForeignKey(name = "`fk_client_contact_client_id`"))
-    @ElementCollection
+    @OneToMany(mappedBy = "client", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private Set<Contact> contacts;
 
     @JsonInclude(value = Include.NON_NULL)
-    @CollectionTable(name = "`client_address`", foreignKey = @ForeignKey(name = "`fk_client_address_client_id`"))
-    @ElementCollection()
+    @OneToMany(mappedBy = "client", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private Set<Address> addresses;
 
     @NotNull
@@ -79,5 +78,27 @@ public class Client {
     @JsonSerialize(converter = LocalDateTimeToStringConverter.class)
     @Column(name = "`updated_at`", nullable = false)
     private LocalDateTime updatedAt;
+
+    public void addContacts(final Set<Contact> contacts) {
+
+        contacts.forEach(c -> c.setClient(this));
+
+        final var clientContacts = Objects.requireNonNullElse(this.getContacts(), new HashSet<Contact>());
+        clientContacts.addAll(contacts);
+
+        this.setContacts(clientContacts);
+
+    }
+
+    public void addAddresses(final Set<Address> addresses) {
+
+        addresses.forEach(a -> a.setClient(this));
+
+        final var clientAddresses = Objects.requireNonNullElse(this.getAddresses(), new HashSet<Address>());
+        clientAddresses.addAll(addresses);
+
+        this.setAddresses(clientAddresses);
+
+    }
 
 }
