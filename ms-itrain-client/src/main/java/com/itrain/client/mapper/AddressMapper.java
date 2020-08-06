@@ -18,7 +18,8 @@ public class AddressMapper {
 
         final var model = Objects.requireNonNullElse(addressModel, new AddressModel());
 
-        return Address.builder()
+        return Address
+            .builder()
             .zipCode(model.getZipCode())
             .publicPlace(model.getPublicPlace())
             .complement(model.getComplement())
