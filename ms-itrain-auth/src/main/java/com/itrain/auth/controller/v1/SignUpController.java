@@ -18,7 +18,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
-@Api(tags = { "auth", "sign up" })
+@Api(tags = { "auth" })
 @RequestMapping(path = { "/api/v1" })
 @Log4j2
 @RestController
