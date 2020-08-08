@@ -16,7 +16,7 @@
     <build.directory.itrain-common>../itrain-common/target</build.directory.itrain-common>
     <build.directory.ms-itrain-auth>../ms-itrain-auth/target</build.directory.ms-itrain-auth>
     <build.directory.ms-itrain-sport>../ms-itrain-sport/target</build.directory.ms-itrain-sport>
-    <build.directory.ms-itrain-client>../ms-itrain-client/target</build.directory.ms-itrain-client>
+    <build.directory.ms-itrain-student>../ms-itrain-student/target</build.directory.ms-itrain-student>
     <build.directory.ms-itrain-gym>../ms-itrain-gym/target</build.directory.ms-itrain-gym>
     <build.directory.ms-itrain-personal-trainer>../ms-itrain-personal-trainer/target</build.directory.ms-itrain-personal-trainer>
 
@@ -24,7 +24,7 @@
     <classes.directory.itrain-common>../itrain-common/target/classes</classes.directory.itrain-common>
     <classes.directory.ms-itrain-auth>../ms-itrain-auth/target/classes</classes.directory.ms-itrain-auth>
     <classes.directory.ms-itrain-sport>../ms-itrain-sport/target/classes</classes.directory.ms-itrain-sport>
-    <classes.directory.ms-itrain-client>../ms-itrain-client/target/classes</classes.directory.ms-itrain-client>
+    <classes.directory.ms-itrain-student>../ms-itrain-student/target/classes</classes.directory.ms-itrain-student>
     <classes.directory.ms-itrain-gym>../ms-itrain-gym/target/classes</classes.directory.ms-itrain-gym>
     <classes.directory.ms-itrain-personal-trainer>../ms-itrain-personal-trainer/target/classes</classes.directory.ms-itrain-personal-trainer>
 
@@ -32,7 +32,7 @@
     <sources.directory.itrain-common>../itrain-common/src/main/java</sources.directory.itrain-common>
     <sources.directory.ms-itrain-auth>../ms-itrain-auth/src/main/java</sources.directory.ms-itrain-auth>
     <sources.directory.ms-itrain-sport>../ms-itrain-sport/src/main/java</sources.directory.ms-itrain-sport>
-    <sources.directory.ms-itrain-client>../ms-itrain-client/src/main/java</sources.directory.ms-itrain-client>
+    <sources.directory.ms-itrain-student>../ms-itrain-student/src/main/java</sources.directory.ms-itrain-student>
     <sources.directory.ms-itrain-gym>../ms-itrain-gym/src/main/java</sources.directory.ms-itrain-gym>
     <sources.directory.ms-itrain-personal-trainer>../ms-itrain-personal-trainer/src/main/java</sources.directory.ms-itrain-personal-trainer>
 
@@ -40,7 +40,7 @@
     <generated-sources.directory.itrain-common>../itrain-common/target/generated-sources/annotations</generated-sources.directory.itrain-common>
     <generated-sources.directory.ms-itrain-auth>../ms-itrain-auth/target/generated-sources/annotations</generated-sources.directory.ms-itrain-auth>
     <generated-sources.directory.ms-itrain-sport>../ms-itrain-sport/target/generated-sources/annotations</generated-sources.directory.ms-itrain-sport>
-    <generated-sources.directory.ms-itrain-client>../ms-itrain-client/target/generated-sources/annotations</generated-sources.directory.ms-itrain-client>
+    <generated-sources.directory.ms-itrain-student>../ms-itrain-student/target/generated-sources/annotations</generated-sources.directory.ms-itrain-student>
     <generated-sources.directory.ms-itrain-gym>../ms-itrain-gym/target/generated-sources/annotations</generated-sources.directory.ms-itrain-gym>
     <generated-sources.directory.ms-itrain-personal-trainer>../ms-itrain-personal-trainer/target/generated-sources/annotations</generated-sources.directory.ms-itrain-personal-trainer>
   </properties>
@@ -97,7 +97,7 @@
                     <fileset dir="${build.directory.itrain-common}"><include name="jacoco.exec" /></fileset>
                     <fileset dir="${build.directory.ms-itrain-auth}"><include name="jacoco.exec" /></fileset>
                     <fileset dir="${build.directory.ms-itrain-sport}"><include name="jacoco.exec" /></fileset>
-                    <fileset dir="${build.directory.ms-itrain-client}"><include name="jacoco.exec" /></fileset>
+                    <fileset dir="${build.directory.ms-itrain-student}"><include name="jacoco.exec" /></fileset>
                     <fileset dir="${build.directory.ms-itrain-gym}"><include name="jacoco.exec" /></fileset>
                     <fileset dir="${build.directory.ms-itrain-personal-trainer}"><include name="jacoco.exec" /></fileset>
                   </executiondata>
@@ -108,7 +108,7 @@
                         <fileset dir="${classes.directory.itrain-common}" />
                         <fileset dir="${classes.directory.ms-itrain-auth}" />
                         <fileset dir="${classes.directory.ms-itrain-sport}" />
-                        <fileset dir="${classes.directory.ms-itrain-client}" />
+                        <fileset dir="${classes.directory.ms-itrain-student}" />
                         <fileset dir="${classes.directory.ms-itrain-gym}" />
                         <fileset dir="${classes.directory.ms-itrain-personal-trainer}" />
                       </classfiles>
@@ -117,7 +117,7 @@
                         <fileset dir="${sources.directory.itrain-common}" />
                         <fileset dir="${sources.directory.ms-itrain-auth}" />
                         <fileset dir="${sources.directory.ms-itrain-sport}" />
-                        <fileset dir="${sources.directory.ms-itrain-client}" />
+                        <fileset dir="${sources.directory.ms-itrain-student}" />
                         <fileset dir="${sources.directory.ms-itrain-gym}" />
                         <fileset dir="${sources.directory.ms-itrain-personal-trainer}" />
                       </sourcefiles>

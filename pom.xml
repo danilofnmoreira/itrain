@@ -27,7 +27,7 @@
     <module>itrain-common</module>
     <module>ms-itrain-auth</module>
     <module>ms-itrain-sport</module>
-    <module>ms-itrain-client</module>
+    <module>ms-itrain-student</module>
     <module>ms-itrain-gym</module>
     <module>ms-itrain-personal-trainer</module>
     <module>jacoco</module>

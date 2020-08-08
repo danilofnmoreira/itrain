@@ -39,7 +39,7 @@
 
     <dependency>
       <groupId>com.itrain</groupId>
-      <artifactId>ms-itrain-client</artifactId>
+      <artifactId>ms-itrain-student</artifactId>
       <version>1.0</version>
     </dependency>
 

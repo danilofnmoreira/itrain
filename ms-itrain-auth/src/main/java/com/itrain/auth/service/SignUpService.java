@@ -29,9 +29,9 @@ public class SignUpService {
 
 		switch (request.getUserType()) {
 
-			case CLIENT:
+			case STUDENT:
 
-				user.addRoles(Set.of(UserRole.ROLE_CLIENT, UserRole.ROLE_USER));
+				user.addRoles(Set.of(UserRole.ROLE_STUDENT, UserRole.ROLE_USER));
 				userService.save(user);
 				break;
 
