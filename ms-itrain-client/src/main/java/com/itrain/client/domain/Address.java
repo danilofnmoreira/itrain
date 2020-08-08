@@ -24,7 +24,6 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,7 +35,6 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(value = SnakeCaseStrategy.class)
 @JsonInclude(value = Include.NON_ABSENT)
@@ -47,7 +45,6 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_client_address_id")
     @SequenceGenerator(name = "sq_client_address_id", sequenceName = "`sq_client_address_id`", allocationSize = 1)
-    @EqualsAndHashCode.Include
     @Column(name = "`id`")
     private Long id;
 
@@ -87,4 +84,29 @@ public class Address {
         clientAddresses.add(this);
         this.getClient().setAddresses(clientAddresses);
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final Address other = (Address) obj;
+        if (id == null) {
+            return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
 }
