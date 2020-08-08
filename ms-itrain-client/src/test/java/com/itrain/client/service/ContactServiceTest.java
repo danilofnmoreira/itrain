@@ -161,4 +161,20 @@ class ContactServiceTest {
         actual.forEach(c -> assertThat(c.getId(), is(equalTo(1L))));
     }
 
+    @Test
+    @DisplayName(value = "given a client id, should return his all contacts")
+    void given_a_client_id_should_return_his_all_contacts() {
+
+        final var contacts = new HashSet<Contact>();
+        contacts.add(Contact.builder().id(1L).build());
+        contacts.add(Contact.builder().id(2L).build());
+
+        final var client = Client.builder().id(clientId).contacts(contacts).build();
+
+        when(clientService.findById(clientId)).thenReturn(client);
+
+        final var actual = contactService.getAll(clientId);
+
+        assertThat(actual, hasSize(2));
+    }
 }

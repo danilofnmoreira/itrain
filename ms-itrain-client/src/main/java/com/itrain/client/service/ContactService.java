@@ -91,4 +91,11 @@ public class ContactService {
         return toDelete;
 	}
 
+	public Set<Contact> getAll(Long clientId) {
+
+        final var client = clientService.findById(clientId);
+
+        return client.getContacts();
+	}
+
 }

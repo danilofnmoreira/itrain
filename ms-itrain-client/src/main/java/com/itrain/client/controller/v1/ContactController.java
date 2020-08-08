@@ -16,6 +16,7 @@ import com.itrain.common.resolver.UserIdResolver.UserId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -74,6 +75,16 @@ public class ContactController {
         log.debug("deleteing contacts for client, {}. {}", clientId, contactIds);
 
         contactService.delete(clientId, contactIds);
+    }
+
+    @ApiOperation(value = "get all contacts from client")
+    @ResponseStatus(code = HttpStatus.OK)
+    @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
+    public Set<Contact> getAll(@ApiIgnore @UserId final Long clientId) {
+
+        log.debug("getting all contacts for client, {}. {}", clientId);
+
+        return contactService.getAll(clientId);
     }
 
 }
