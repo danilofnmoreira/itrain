@@ -43,6 +43,8 @@ public class ContactController {
 
         log.debug("adding contacts to client, {}. {}", clientId, models);
 
+        models.forEach(c-> c.setId(null));
+
         final var contacts = ContactMapper.createFrom(models);
 
         return contactService.add(clientId, contacts);

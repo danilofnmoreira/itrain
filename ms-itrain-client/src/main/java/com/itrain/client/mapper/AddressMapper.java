@@ -33,7 +33,7 @@ public class AddressMapper {
             .stream()
             .filter(a -> !Objects.isNull(a))
             .map(AddressMapper::createFrom)
-            .collect(Collectors.toUnmodifiableSet());
+            .collect(Collectors.toCollection(HashSet::new));
     }
 
     public static Address createNullSafeFrom(final AddressModel model) {

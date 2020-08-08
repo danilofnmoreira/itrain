@@ -1,13 +1,12 @@
 package com.itrain.client.service;
 
-import java.util.HashSet;
-import java.util.Objects;
+import java.util.Collections;
 import java.util.Set;
 
 import javax.transaction.Transactional;
 
 import com.itrain.client.domain.Contact;
-import com.itrain.client.exception.ContactOwnershipConflictException;
+import com.itrain.client.repository.ContactRepository;
 
 import org.springframework.stereotype.Service;
 
@@ -18,17 +17,26 @@ import lombok.RequiredArgsConstructor;
 public class ContactService {
 
     private final ClientService clientService;
+    private final ContactRepository contactRepository;
 
     @Transactional
     public Set<Contact> add(final Long clientId, final Set<Contact> contacts) {
 
         final var client = clientService.findById(clientId);
 
-        contacts.forEach(c -> c.setId(null));
+        contacts.forEach(c -> {
 
-        client.addContacts(contacts);
+            c.setId(null);
 
-        return clientService.save(client).getContacts();
+            c.addClient(client);
+
+        });
+
+        contactRepository.saveAll(contacts);
+
+        clientService.save(client);
+
+        return contacts;
     }
 
     @Transactional

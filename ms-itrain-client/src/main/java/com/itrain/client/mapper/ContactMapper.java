@@ -32,7 +32,7 @@ public class ContactMapper {
             .stream()
             .filter(c -> !Objects.isNull(c))
             .map(ContactMapper::createFrom)
-            .collect(Collectors.toUnmodifiableSet());
+            .collect(Collectors.toCollection(HashSet::new));
     }
 
     public static Contact createNullSafeFrom(final ContactModel model) {

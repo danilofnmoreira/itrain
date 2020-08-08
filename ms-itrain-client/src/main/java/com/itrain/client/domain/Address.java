@@ -74,7 +74,7 @@ public class Address {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "`client_id`", foreignKey = @ForeignKey(name = "`fk_client_address_client_id`"))
+    @JoinColumn(name = "`client_id`", foreignKey = @ForeignKey(name = "`fk_client_address_client_id`"), nullable = false, updatable = false)
     private Client client;
 
     public void addClient(final Client client) {

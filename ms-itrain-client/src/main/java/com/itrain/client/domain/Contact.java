@@ -72,7 +72,7 @@ public class Contact {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "`client_id`", foreignKey = @ForeignKey(name = "`fk_client_contact_client_id`"))
+    @JoinColumn(name = "`client_id`", foreignKey = @ForeignKey(name = "`fk_client_contact_client_id`"), nullable = false, updatable = false)
     private Client client;
 
     @Transient
