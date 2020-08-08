@@ -1,6 +1,7 @@
 package com.itrain.client.controller.v1.model;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -28,6 +29,7 @@ import lombok.ToString;
 @JsonInclude(value = Include.NON_ABSENT)
 public class ContactModel {
 
+    @Positive
     private Long id;
 
     @Size(max = 500)
