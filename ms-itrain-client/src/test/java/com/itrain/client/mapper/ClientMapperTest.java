@@ -1,7 +1,8 @@
 package com.itrain.client.mapper;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.samePropertyValuesAs;
 
 import java.util.Collections;
 import java.util.Set;
@@ -28,18 +29,18 @@ class ClientMapperTest {
         @DisplayName(value = "with null properties, if the given ClientModel is null")
         void with_null_properties_if_the_given_ClientModel_is_null() {
 
-            var expected = Client
+            final var expected = Client
                 .builder()
                 .id(1L)
                 .addresses(Collections.emptySet())
                 .contacts(Collections.emptySet())
                 .build();
 
-            ClientModel clientModel = null;
+            final ClientModel clientModel = null;
 
-            Long clientId = 1L;
+            final Long clientId = 1L;
 
-            var actual = ClientMapper.createFrom(clientModel, clientId);
+            final var actual = ClientMapper.createNullSafeFrom(clientModel, clientId);
 
             assertThat(actual, samePropertyValuesAs(expected));
         }
@@ -48,7 +49,7 @@ class ClientMapperTest {
         @DisplayName(value = "with the same properties values from the given ClientModel if it is not null")
         void with_the_same_properties_values_from_the_given_ClientModel_if_it_is_not_null() {
 
-            var expectedAddress = Address
+            final var expectedAddress = Address
                 .builder()
                 .city("city")
                 .complement("complement")
@@ -58,7 +59,7 @@ class ClientMapperTest {
                 .zipCode("zipCode")
                 .build();
 
-            var expectedContact = Contact
+            final var expectedContact = Contact
                 .builder()
                 .email("email")
                 .name("name")
@@ -66,14 +67,14 @@ class ClientMapperTest {
                 .whatsapp(true)
                 .build();
 
-            var expected = Client
+            final var expected = Client
                 .builder()
                 .id(1L)
                 .addresses(Set.of(expectedAddress))
                 .contacts(Set.of(expectedContact))
                 .build();
 
-            var contactModel = Set.of(ContactModel
+            final var contactModel = Set.of(ContactModel
                 .builder()
                 .email("email")
                 .name("name")
@@ -81,7 +82,7 @@ class ClientMapperTest {
                 .whatsapp(true)
                 .build());
 
-            var addressModel = Set.of(AddressModel
+            final var addressModel = Set.of(AddressModel
                 .builder()
                 .city("city")
                 .complement("complement")
@@ -91,17 +92,17 @@ class ClientMapperTest {
                 .zipCode("zipCode")
                 .build());
 
-            var clientModel = ClientModel
+            final var clientModel = ClientModel
                 .builder()
                 .contacts(contactModel)
                 .addresses(addressModel)
                 .build();
 
-            Long clientId = 1L;
+            final Long clientId = 1L;
 
-            var actual = ClientMapper.createFrom(clientModel, clientId);
+            final var actual = ClientMapper.createFrom(clientModel, clientId);
 
-            assertThat(actual, samePropertyValuesAs(expected));
+            assertThat(actual, samePropertyValuesAs(expected, "addresses", "contacts"));
             assertThat(actual.getContacts(), hasSize(1));
             actual.getContacts().forEach(c -> assertThat(c, samePropertyValuesAs(expectedContact)));
             assertThat(actual.getAddresses(), hasSize(1));

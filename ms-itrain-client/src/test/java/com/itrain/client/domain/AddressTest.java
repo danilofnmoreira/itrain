@@ -59,7 +59,7 @@ class AddressTest {
         @BeforeEach
         void setUp() {
 
-            var addresses = new HashSet<Address>();
+            final var addresses = new HashSet<Address>();
             addresses.add(Address.builder().id(1L).build());
             addresses.add(Address.builder().id(2L).build());
 
@@ -69,7 +69,7 @@ class AddressTest {
         @Test
         void test() {
 
-            var address = Address.builder().id(3L).build();
+            final var address = Address.builder().id(3L).build();
 
             address.addClient(client);
 
@@ -84,7 +84,7 @@ class AddressTest {
 
             client.setAddresses(null);
 
-            var address = Address.builder().id(4L).build();
+            final var address = Address.builder().id(4L).build();
 
             address.addClient(client);
 

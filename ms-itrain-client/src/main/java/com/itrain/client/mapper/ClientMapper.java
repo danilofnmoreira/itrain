@@ -11,14 +11,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ClientMapper {
 
-    public static Client createFrom(final ClientModel clientModel, final Long clientId) {
+    public static Client createFrom(final ClientModel model, final Long clientId) {
 
-        final var model = Objects.requireNonNullElse(clientModel, new ClientModel());
-
-        return Client.builder()
+        return Client
+            .builder()
             .id(clientId)
             .contacts(ContactMapper.createFrom(model.getContacts()))
             .addresses(AddressMapper.createFrom(model.getAddresses()))
+            .build();
+    }
+
+    public static Client createNullSafeFrom(final ClientModel model, final Long clientId) {
+
+        final var nullSafeModel = Objects.requireNonNullElse(model, new ClientModel());
+
+        return Client
+            .builder()
+            .id(clientId)
+            .contacts(ContactMapper.createNullSafeFrom(nullSafeModel.getContacts()))
+            .addresses(AddressMapper.createNullSafeFrom(nullSafeModel.getAddresses()))
             .build();
     }
 }

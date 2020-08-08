@@ -59,7 +59,7 @@ class ContactTest {
         @BeforeEach
         void setUp() {
 
-            var contacts = new HashSet<Contact>();
+            final var contacts = new HashSet<Contact>();
             contacts.add(Contact.builder().id(1L).build());
             contacts.add(Contact.builder().id(2L).build());
 
@@ -69,7 +69,7 @@ class ContactTest {
         @Test
         void test() {
 
-            var contact = Contact.builder().id(3L).build();
+            final var contact = Contact.builder().id(3L).build();
 
             contact.addClient(client);
 
@@ -84,7 +84,7 @@ class ContactTest {
 
             client.setContacts(null);
 
-            var contact = Contact.builder().id(4L).build();
+            final var contact = Contact.builder().id(4L).build();
 
             contact.addClient(client);
 

@@ -14,11 +14,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ContactMapper {
 
-    public static Contact createFrom(final ContactModel contactModel) {
+    public static Contact createFrom(final ContactModel model) {
 
-        final var model = Objects.requireNonNullElse(contactModel, new ContactModel());
-
-        return Contact.builder()
+        return Contact
+            .builder()
             .id(model.getId())
             .name(model.getName())
             .email(model.getEmail())
@@ -27,12 +26,27 @@ public class ContactMapper {
             .build();
     }
 
-    public static Set<Contact> createFrom(final Set<ContactModel> contactsModels) {
+    public static Set<Contact> createFrom(final Set<ContactModel> models) {
 
-        final var models = Objects.requireNonNullElse(contactsModels, new HashSet<ContactModel>());
-
-        return models.stream()
+        return models
+            .stream()
+            .filter(c -> !Objects.isNull(c))
             .map(ContactMapper::createFrom)
-            .collect(Collectors.toSet());
+            .collect(Collectors.toUnmodifiableSet());
     }
+
+    public static Contact createNullSafeFrom(final ContactModel model) {
+
+        final var nullSafeModel = Objects.requireNonNullElse(model, new ContactModel());
+
+        return createFrom(nullSafeModel);
+    }
+
+    public static Set<Contact> createNullSafeFrom(final Set<ContactModel> models) {
+
+        final var nullSafeModels = Objects.requireNonNullElse(models, new HashSet<ContactModel>());
+
+        return createFrom(nullSafeModels);
+    }
+
 }

@@ -14,9 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AddressMapper {
 
-    public static Address createFrom(final AddressModel addressModel) {
-
-        final var model = Objects.requireNonNullElse(addressModel, new AddressModel());
+    public static Address createFrom(final AddressModel model) {
 
         return Address
             .builder()
@@ -29,12 +27,27 @@ public class AddressMapper {
             .build();
     }
 
-    public static Set<Address> createFrom(final Set<AddressModel> addressesModels) {
+    public static Set<Address> createFrom(final Set<AddressModel> models) {
 
-        final var model = Objects.requireNonNullElse(addressesModels, new HashSet<AddressModel>());
-
-        return model.stream()
+        return models
+            .stream()
+            .filter(a -> !Objects.isNull(a))
             .map(AddressMapper::createFrom)
-            .collect(Collectors.toSet());
+            .collect(Collectors.toUnmodifiableSet());
     }
+
+    public static Address createNullSafeFrom(final AddressModel model) {
+
+        final var nullSafeModel = Objects.requireNonNullElse(model, new AddressModel());
+
+        return createFrom(nullSafeModel);
+    }
+
+    public static Set<Address> createNullSafeFrom(final Set<AddressModel> models) {
+
+        final var nullSafeModels = Objects.requireNonNullElse(models, new HashSet<AddressModel>());
+
+        return createFrom(nullSafeModels);
+    }
+
 }

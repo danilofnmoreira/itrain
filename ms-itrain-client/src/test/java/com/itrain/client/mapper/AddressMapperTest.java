@@ -26,11 +26,11 @@ class AddressMapperTest {
         @DisplayName(value = "with null properties, if the given AddressModel is null")
         void with_null_properties_if_the_given_AddressModel_is_null() {
 
-            var expected = new Address();
+            final var expected = new Address();
 
-            AddressModel addressModel = null;
+            final AddressModel addressModel = null;
 
-            var actual = AddressMapper.createFrom(addressModel);
+            final var actual = AddressMapper.createNullSafeFrom(addressModel);
 
             assertThat(actual, samePropertyValuesAs(expected));
         }
@@ -39,7 +39,7 @@ class AddressMapperTest {
         @DisplayName(value = "with the same properties values from the given AddressModel if it is not null")
         void with_the_same_properties_values_from_the_given_AddressModel_if_it_is_not_null() {
 
-            var expected = Address
+            final var expected = Address
                 .builder()
                 .city("city")
                 .complement("complement")
@@ -49,7 +49,7 @@ class AddressMapperTest {
                 .zipCode("zipCode")
                 .build();
 
-            var addressModel = AddressModel
+            final var addressModel = AddressModel
                 .builder()
                 .city("city")
                 .complement("complement")
@@ -59,7 +59,7 @@ class AddressMapperTest {
                 .zipCode("zipCode")
                 .build();
 
-            var actual = AddressMapper.createFrom(addressModel);
+            final var actual = AddressMapper.createFrom(addressModel);
 
             assertThat(actual, samePropertyValuesAs(expected));
         }
@@ -74,9 +74,9 @@ class AddressMapperTest {
         @DisplayName(value = "without itens, if the given set of AddressModel is null")
         void without_itens_if_the_given_set_of_AddressModel_is_null() {
 
-            Set<AddressModel> addressesModels = null;
+            final Set<AddressModel> addressesModels = null;
 
-            var actual = AddressMapper.createFrom(addressesModels);
+            final var actual = AddressMapper.createNullSafeFrom(addressesModels);
 
             assertThat(actual, is(emptyCollectionOf(Address.class)));
         }
@@ -85,7 +85,7 @@ class AddressMapperTest {
         @DisplayName(value = "with same size and Addresses with the same properties values from the given AddressModel set if it is not null")
         void with_same_size_and_Addresses_with_the_same_properties_values_from_the_given_AddressModel_set_if_it_is_not_null() {
 
-            var expected = Address
+            final var expected = Address
                 .builder()
                 .city("city")
                 .complement("complement")
@@ -95,7 +95,7 @@ class AddressMapperTest {
                 .zipCode("zipCode")
                 .build();
 
-            var addressesModels = Set.of(AddressModel
+            final var addressesModels = Set.of(AddressModel
                 .builder()
                 .city("city")
                 .complement("complement")
@@ -105,7 +105,7 @@ class AddressMapperTest {
                 .zipCode("zipCode")
                 .build());
 
-            var actual = AddressMapper.createFrom(addressesModels);
+            final var actual = AddressMapper.createFrom(addressesModels);
 
             assertThat(actual, hasSize(1));
             actual.forEach(a -> assertThat(a, samePropertyValuesAs(expected)));
