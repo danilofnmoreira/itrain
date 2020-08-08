@@ -77,6 +77,17 @@ public class Address {
     @JoinColumn(name = "`client_id`", foreignKey = @ForeignKey(name = "`fk_client_address_client_id`"), nullable = false, updatable = false)
     private Client client;
 
+    public void fillFrom(final Address address) {
+
+        setId(address.getId());
+        setZipCode(address.getZipCode());
+        setPublicPlace(address.getPublicPlace());
+        setComplement(address.getComplement());
+        setDistrict(address.getDistrict());
+        setCity(address.getCity());
+        setFederalUnit(address.getFederalUnit());
+    }
+
     public void addClient(final Client client) {
 
         this.setClient(client);

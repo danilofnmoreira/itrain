@@ -45,8 +45,8 @@ class ContactServiceTest {
     }
 
     @Test
-    @DisplayName(value = "given a set of clients, should be added to the found client with the given id")
-    void given_a_set_of_clients_should_be_added_to_the_found_client_with_the_given_id() {
+    @DisplayName(value = "given a set of contacts, should be added to the found client with the given id")
+    void given_a_set_of_contacts_should_be_added_to_the_found_client_with_the_given_id() {
 
         final var currentSetOfContacts = new HashSet<Contact>();
         currentSetOfContacts.add(Contact.builder().id(1L).build());

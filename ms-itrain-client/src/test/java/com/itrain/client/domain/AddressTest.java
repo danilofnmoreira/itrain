@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.hamcrest.Matchers.sameInstance;
 
 import java.util.HashSet;
@@ -92,6 +93,29 @@ class AddressTest {
             assertThat(address.getClient(), is(sameInstance(client)));
             assertThat(client.getAddresses(), hasItem(address));
         }
+    }
+
+    @Test
+    @DisplayName(value = "when fill an address from other, they must have the same properties values")
+    void when_fill_a_address_from_other_they_must_have_the_same_properties_values() {
+
+        final var address = Address
+            .builder()
+            .city("city")
+            .complement("complement")
+            .district("district")
+            .federalUnit("federalUnit")
+            .id(1L)
+            .publicPlace("publicPlace")
+            .zipCode("zipCode")
+            .client(new Client())
+            .build();
+
+        final var actual = new Address();
+
+        actual.fillFrom(address);
+
+        assertThat(actual, samePropertyValuesAs(address, "client"));
     }
 
 }
