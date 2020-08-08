@@ -37,7 +37,8 @@ public class ClientController {
 
     @ApiOperation(value = "create a client")
     @ResponseStatus(code = HttpStatus.CREATED)
-    @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
+    @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE },
+                 produces = { MediaType.APPLICATION_JSON_VALUE })
     public Client create(@Valid @RequestBody @NotNull final ClientModel model, @ApiIgnore @UserId final Long clientId) {
 
         final var addresses = Objects.requireNonNullElse(model.getAddresses(), new HashSet<AddressModel>());

@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.sameInstance;
 
@@ -92,5 +93,26 @@ class ContactTest {
             assertThat(contact.getClient(), is(sameInstance(client)));
             assertThat(client.getContacts(), hasItem(contact));
         }
+    }
+
+    @Test
+    @DisplayName(value = "when fill a contact from other, they must have the same properties values")
+    void when_fill_a_contact_from_other_they_must_have_the_same_properties_values() {
+
+        final var contact = Contact
+            .builder()
+            .email("email")
+            .id(1L)
+            .name("name")
+            .phone("phone")
+            .whatsapp(true)
+            .client(new Client())
+            .build();
+
+        final var actual = new Contact();
+
+        actual.fillFrom(contact);
+
+        assertThat(actual, samePropertyValuesAs(contact, "client"));
     }
 }

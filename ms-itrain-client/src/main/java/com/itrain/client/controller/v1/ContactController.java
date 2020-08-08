@@ -38,7 +38,8 @@ public class ContactController {
 
     @ApiOperation(value = "add contacts to the given client")
     @ResponseStatus(code = HttpStatus.CREATED)
-    @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
+    @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE },
+                 produces = { MediaType.APPLICATION_JSON_VALUE })
     public Set<Contact> add(@Valid @RequestBody @NotEmpty final Set<@NotNull ContactModel> models, @ApiIgnore @UserId final Long clientId) {
 
         log.debug("adding contacts to client, {}. {}", clientId, models);
@@ -52,14 +53,15 @@ public class ContactController {
 
     @ApiOperation(value = "edit the given set of contacts")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    @PutMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
-    public Set<Contact> edit(@Valid @RequestBody @NotEmpty final Set<@NotNull ContactModel> models, @ApiIgnore @UserId final Long clientId) {
+    @PutMapping(consumes = { MediaType.APPLICATION_JSON_VALUE },
+                produces = { MediaType.APPLICATION_JSON_VALUE })
+    public void edit(@Valid @RequestBody @NotEmpty final Set<@NotNull ContactModel> models, @ApiIgnore @UserId final Long clientId) {
 
         log.debug("editing contacts for client, {}. {}", clientId, models);
 
         final var contacts = ContactMapper.createFrom(models);
 
-        return contactService.edit(clientId, contacts);
+        contactService.edit(clientId, contacts);
     }
 
 }

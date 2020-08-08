@@ -44,20 +44,24 @@ public class ContactService {
 
         final var client = clientService.findById(clientId);
 
-        final var currentContacts = Objects.requireNonNullElse(client.getContacts(), new HashSet<Contact>());
+        final var currentContacts = client.getContacts();
 
-        if (contacts.retainAll(currentContacts)) {
+        contacts.retainAll(currentContacts);
 
-            if (contacts.isEmpty()) {
+        if (contacts.isEmpty()) {
 
-                throw new ContactOwnershipConflictException("None of the given contacts belong to the client.");
-            }
-
-            currentContacts.removeAll(contacts);
-            client.addContacts(contacts);
+            return Collections.emptySet();
         }
 
-        return clientService.save(client).getContacts();
+        contacts.forEach(c -> currentContacts
+            .stream()
+            .filter(c::equals)
+            .forEach(cc -> cc.fillFrom(c)));
+
+        clientService.save(client);
+
+        return contacts;
+
     }
 
 }

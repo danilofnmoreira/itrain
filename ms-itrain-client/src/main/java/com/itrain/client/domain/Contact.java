@@ -75,6 +75,15 @@ public class Contact {
     @JoinColumn(name = "`client_id`", foreignKey = @ForeignKey(name = "`fk_client_contact_client_id`"), nullable = false, updatable = false)
     private Client client;
 
+    public void fillFrom(final Contact contact) {
+
+        setId(contact.getId());
+        setName(contact.getName());
+        setEmail(contact.getEmail());
+        setPhone(contact.getPhone());
+        setWhatsapp(contact.getWhatsapp());
+    }
+
     @Transient
     public boolean isWhatsapp() {
 

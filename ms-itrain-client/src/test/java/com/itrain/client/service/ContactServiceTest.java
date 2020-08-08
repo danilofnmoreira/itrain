@@ -93,4 +93,53 @@ class ContactServiceTest {
 
         assertThat(actual.getMessage(), is(equalTo("Client, 1, not found.")));
     }
+
+    @Nested
+    @DisplayName(value = "when editing a given set of contacts, ")
+    class when_editing_a_given_set_of_contacts {
+
+        private Client client;
+
+        @BeforeEach
+        void setUp() {
+
+            final var contacts = new HashSet<Contact>();
+            contacts.add(Contact.builder().id(1L).build());
+            contacts.add(Contact.builder().id(2L).build());
+
+            client = Client.builder().id(clientId).contacts(contacts).build();
+        }
+
+        @Test
+        @DisplayName(value = "should return empty set, when none of the given contacts owns for the given client")
+        void should_return_empty_set_when_none_of_the_given_contacts_owns_for_the_given_client() {
+
+            final var contacts = new HashSet<Contact>();
+            contacts.add(Contact.builder().id(3L).build());
+
+            when(clientService.findById(clientId)).thenReturn(client);
+
+            final var actual = contactService.edit(clientId, contacts);
+
+            assertThat(actual, is(empty()));
+        }
+
+        @Test
+        @DisplayName(value = "should return edited set of contacts")
+        void should_return_edited_set_of_contacts() {
+
+            final var contacts = new HashSet<Contact>();
+            contacts.add(Contact.builder().id(1L).email("email").build());
+            contacts.add(Contact.builder().id(2L).email("email").build());
+
+            when(clientService.findById(clientId)).thenReturn(client);
+
+            final var actual = contactService.edit(clientId, contacts);
+
+            assertThat(actual.containsAll(contacts), is(true));
+            actual.forEach(c -> assertThat(c.getEmail(), is(equalTo("email"))));
+            client.getContacts().forEach(c -> assertThat(c.getEmail(), is(equalTo("email"))));
+        }
+    }
+
 }
