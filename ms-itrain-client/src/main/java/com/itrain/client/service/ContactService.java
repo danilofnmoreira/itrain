@@ -2,6 +2,7 @@ package com.itrain.client.service;
 
 import java.util.Collections;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -63,5 +64,31 @@ public class ContactService {
         return contacts;
 
     }
+
+    @Transactional
+	public Set<Contact> delete(final Long clientId, final Set<Long> contactIds) {
+
+        final var client = clientService.findById(clientId);
+
+        final var currentContacts = client.getContacts();
+
+        final var toDelete = currentContacts
+            .stream()
+            .filter(c -> contactIds.contains(c.getId()))
+            .collect(Collectors.toSet());
+
+        if (toDelete.isEmpty()) {
+
+            return Collections.emptySet();
+        }
+
+        contactRepository.deleteAll(toDelete);
+
+        currentContacts.removeAll(toDelete);
+
+        clientService.save(client);
+
+        return toDelete;
+	}
 
 }

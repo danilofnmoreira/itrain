@@ -1,10 +1,10 @@
 package com.itrain.client.service;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
@@ -140,6 +140,25 @@ class ContactServiceTest {
             actual.forEach(c -> assertThat(c.getEmail(), is(equalTo("email"))));
             client.getContacts().forEach(c -> assertThat(c.getEmail(), is(equalTo("email"))));
         }
+    }
+
+    @Test
+    @DisplayName(value = "given a set of contact ids, should delete them from the given contact")
+    void given_a_set_of_contact_ids_should_delete_them_from_the_given_contact() {
+
+        final var contacts = new HashSet<Contact>();
+        contacts.add(Contact.builder().id(1L).build());
+        contacts.add(Contact.builder().id(2L).build());
+
+        final var client = Client.builder().id(clientId).contacts(contacts).build();
+
+        when(clientService.findById(clientId)).thenReturn(client);
+
+        final var actual = contactService.delete(clientId, Set.of(1L));
+
+        assertThat(client.getContacts(), hasSize(1));
+        assertThat(actual, hasSize(1));
+        actual.forEach(c -> assertThat(c.getId(), is(equalTo(1L))));
     }
 
 }
