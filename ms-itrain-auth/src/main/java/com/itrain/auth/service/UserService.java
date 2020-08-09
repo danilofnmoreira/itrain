@@ -36,4 +36,13 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User create(final User user) {
+
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new DuplicateEntityException(String.format("User, %s, already exists.", user.getUsername()));
+        }
+
+        return save(user);
+    }
+
 }
