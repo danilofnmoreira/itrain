@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import springfox.documentation.annotations.ApiIgnore;
 
-@Api(tags = { "contact", "student concat" })
+@Api(tags = { "contact", "student contact" })
 @RequestMapping(path = { "/api/v1/student/contacts" })
 @Log4j2
 @RestController
