@@ -23,4 +23,10 @@ itrain:
     contact-email: bzappcomercial@gmail.com
     api-description: ITrain API for all
   student:
-    base-url: http://localhost:5434
+    base-url: ${ITRAIN_STUDENT_BASE_URL}
+  gym:
+    base-url: ${ITRAIN_GYM_BASE_URL}
+  personal-trainer:
+    base-url: ${ITRAIN_PERSONAL_TRAINER_BASE_URL}
+  sport:
+    base-url: ${ITRAIN_SPORT_BASE_URL}

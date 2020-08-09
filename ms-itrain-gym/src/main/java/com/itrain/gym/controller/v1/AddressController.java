@@ -1,4 +1,4 @@
-package com.itrain.student.controller.v1;
+package com.itrain.gym.controller.v1;
 
 import java.util.Set;
 
@@ -7,10 +7,10 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-import com.itrain.student.controller.v1.model.AddressModel;
-import com.itrain.student.domain.Address;
-import com.itrain.student.mapper.AddressMapper;
-import com.itrain.student.service.AddressService;
+import com.itrain.gym.controller.v1.model.AddressModel;
+import com.itrain.gym.domain.Address;
+import com.itrain.gym.mapper.AddressMapper;
+import com.itrain.gym.service.AddressService;
 import com.itrain.common.resolver.UserIdResolver.UserId;
 
 import org.springframework.http.HttpStatus;
@@ -31,60 +31,60 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import springfox.documentation.annotations.ApiIgnore;
 
-@Api(tags = { "address", "student" })
-@RequestMapping(path = { "/api/v1/student/addresses" })
+@Api(tags = { "address", "gym" })
+@RequestMapping(path = { "/api/v1/gym/addresses" })
 @Log4j2
-@RestController(value = "student-address-controller")
+@RestController(value = "gym-address-controller")
 @RequiredArgsConstructor
 public class AddressController {
 
     private final AddressService addressService;
 
-    @ApiOperation(value = "add addresses to the given student")
+    @ApiOperation(value = "add addresses to the given gym")
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE },
                  produces = { MediaType.APPLICATION_JSON_VALUE })
-    public Set<Address> add(@Valid @RequestBody @NotEmpty final Set<@NotNull AddressModel> models, @ApiIgnore @UserId final Long studentId) {
+    public Set<Address> add(@Valid @RequestBody @NotEmpty final Set<@NotNull AddressModel> models, @ApiIgnore @UserId final Long gymId) {
 
-        log.debug("adding addresses to student, {}. {}", studentId, models);
+        log.debug("adding addresses to gym, {}. {}", gymId, models);
 
         models.forEach(c-> c.setId(null));
 
         final var addresses = AddressMapper.createFrom(models);
 
-        return addressService.add(studentId, addresses);
+        return addressService.add(gymId, addresses);
     }
 
     @ApiOperation(value = "edit the given set of addresses")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @PutMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
-    public void edit(@Valid @RequestBody @NotEmpty final Set<@NotNull AddressModel> models, @ApiIgnore @UserId final Long studentId) {
+    public void edit(@Valid @RequestBody @NotEmpty final Set<@NotNull AddressModel> models, @ApiIgnore @UserId final Long gymId) {
 
-        log.debug("editing addresses for student, {}. {}", studentId, models);
+        log.debug("editing addresses for gym, {}. {}", gymId, models);
 
         final var addresses = AddressMapper.createFrom(models);
 
-        addressService.edit(studentId, addresses);
+        addressService.edit(gymId, addresses);
     }
 
     @ApiOperation(value = "delete the given set of address ids")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @DeleteMapping
-    public void delete(@Valid @RequestParam(name = "address_id") @NotEmpty final Set<@NotNull @Positive Long> addressIds, @ApiIgnore @UserId final Long studentId) {
+    public void delete(@Valid @RequestParam(name = "address_id") @NotEmpty final Set<@NotNull @Positive Long> addressIds, @ApiIgnore @UserId final Long gymId) {
 
-        log.debug("deleteing addresses for student, {}. {}", studentId, addressIds);
+        log.debug("deleteing addresses for gym, {}. {}", gymId, addressIds);
 
-        addressService.delete(studentId, addressIds);
+        addressService.delete(gymId, addressIds);
     }
 
-    @ApiOperation(value = "get all addresses from student")
+    @ApiOperation(value = "get all addresses from gym")
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-    public Set<Address> getAll(@ApiIgnore @UserId final Long studentId) {
+    public Set<Address> getAll(@ApiIgnore @UserId final Long gymId) {
 
-        log.debug("getting all addresses for student, {}. {}", studentId);
+        log.debug("getting all addresses for gym, {}. {}", gymId);
 
-        return addressService.getAll(studentId);
+        return addressService.getAll(gymId);
     }
 
 }

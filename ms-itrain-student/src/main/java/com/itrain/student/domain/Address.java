@@ -38,7 +38,7 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(value = SnakeCaseStrategy.class)
 @JsonInclude(value = Include.NON_ABSENT)
-@Entity
+@Entity(name = "student-address-entity")
 @Table(name = "`student_address`")
 public class Address {
 

@@ -1,8 +1,7 @@
-package com.itrain.student.controller.v1.model;
+package com.itrain.gym.controller.v1.model;
 
-import java.util.Set;
-
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -26,12 +25,27 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(value = SnakeCaseStrategy.class)
 @JsonInclude(value = Include.NON_ABSENT)
-public class StudentModel {
+public class AddressModel {
 
-    @JsonInclude(value = Include.NON_NULL)
-    private Set<@NotNull ContactModel> contacts;
+    @Positive
+    private Long id;
 
-    @JsonInclude(value = Include.NON_NULL)
-    private Set<@NotNull AddressModel> addresses;
+    @Size(max = 50)
+    private String zipCode;
+
+    @Size(max = 300)
+    private String publicPlace;
+
+    @Size(max = 300)
+    private String complement;
+
+    @Size(max = 300)
+    private String district;
+
+    @Size(max = 300)
+    private String city;
+
+    @Size(max = 300)
+    private String federalUnit;
 
 }

@@ -1,4 +1,4 @@
-package com.itrain.student.config;
+package com.itrain.common.config;
 
 import java.util.List;
 

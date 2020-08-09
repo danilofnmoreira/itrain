@@ -1,11 +1,23 @@
 package com.itrain.gym.domain;
 
+import java.util.HashSet;
+import java.util.Objects;
+
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -31,8 +43,15 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(value = SnakeCaseStrategy.class)
 @JsonInclude(value = Include.NON_ABSENT)
-@Embeddable
+@Entity(name = "gym-contact-entity")
+@Table(name = "`gym_contact`")
 public class Contact {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_gym_contact_id")
+    @SequenceGenerator(name = "sq_gym_contact_id", sequenceName = "`sq_gym_contact_id`", allocationSize = 1)
+    @Column(name = "`id`")
+    private Long id;
 
     @Size(max = 500)
     @Column(name = "`name`", length = 500)
@@ -51,10 +70,56 @@ public class Contact {
     @Column(name = "`is_whatsapp`")
     private Boolean whatsapp;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "`gym_id`", foreignKey = @ForeignKey(name = "`fk_gym_contact_gym_id`"), nullable = false, updatable = false)
+    private Gym gym;
+
+    public void fillFrom(final Contact contact) {
+
+        setId(contact.getId());
+        setName(contact.getName());
+        setEmail(contact.getEmail());
+        setPhone(contact.getPhone());
+        setWhatsapp(contact.getWhatsapp());
+    }
+
     @Transient
     public boolean isWhatsapp() {
 
         return BooleanUtils.toBoolean(whatsapp);
+    }
+
+    public void addGym(final Gym gym) {
+
+        this.setGym(gym);
+        final var gymContacts = Objects.requireNonNullElse(this.getGym().getContacts(), new HashSet<Contact>());
+        gymContacts.add(this);
+        this.getGym().setContacts(gymContacts);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final Contact other = (Contact) obj;
+        if (id == null) {
+            return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
     }
 
 }

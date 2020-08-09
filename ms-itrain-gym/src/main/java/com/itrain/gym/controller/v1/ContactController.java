@@ -1,4 +1,4 @@
-package com.itrain.student.controller.v1;
+package com.itrain.gym.controller.v1;
 
 import java.util.Set;
 
@@ -7,10 +7,10 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-import com.itrain.student.controller.v1.model.ContactModel;
-import com.itrain.student.domain.Contact;
-import com.itrain.student.mapper.ContactMapper;
-import com.itrain.student.service.ContactService;
+import com.itrain.gym.controller.v1.model.ContactModel;
+import com.itrain.gym.domain.Contact;
+import com.itrain.gym.mapper.ContactMapper;
+import com.itrain.gym.service.ContactService;
 import com.itrain.common.resolver.UserIdResolver.UserId;
 
 import org.springframework.http.HttpStatus;
@@ -31,60 +31,60 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import springfox.documentation.annotations.ApiIgnore;
 
-@Api(tags = { "contact", "student" })
-@RequestMapping(path = { "/api/v1/student/contacts" })
+@Api(tags = { "contact", "gym" })
+@RequestMapping(path = { "/api/v1/gym/contacts" })
 @Log4j2
-@RestController(value = "student-contact-controller")
+@RestController(value = "gym-contact-controller")
 @RequiredArgsConstructor
 public class ContactController {
 
     private final ContactService contactService;
 
-    @ApiOperation(value = "add contacts to the given student")
+    @ApiOperation(value = "add contacts to the given gym")
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE },
                  produces = { MediaType.APPLICATION_JSON_VALUE })
-    public Set<Contact> add(@Valid @RequestBody @NotEmpty final Set<@NotNull ContactModel> models, @ApiIgnore @UserId final Long studentId) {
+    public Set<Contact> add(@Valid @RequestBody @NotEmpty final Set<@NotNull ContactModel> models, @ApiIgnore @UserId final Long gymId) {
 
-        log.debug("adding contacts to student, {}. {}", studentId, models);
+        log.debug("adding contacts to gym, {}. {}", gymId, models);
 
         models.forEach(c-> c.setId(null));
 
         final var contacts = ContactMapper.createFrom(models);
 
-        return contactService.add(studentId, contacts);
+        return contactService.add(gymId, contacts);
     }
 
     @ApiOperation(value = "edit the given set of contacts")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @PutMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
-    public void edit(@Valid @RequestBody @NotEmpty final Set<@NotNull ContactModel> models, @ApiIgnore @UserId final Long studentId) {
+    public void edit(@Valid @RequestBody @NotEmpty final Set<@NotNull ContactModel> models, @ApiIgnore @UserId final Long gymId) {
 
-        log.debug("editing contacts for student, {}. {}", studentId, models);
+        log.debug("editing contacts for gym, {}. {}", gymId, models);
 
         final var contacts = ContactMapper.createFrom(models);
 
-        contactService.edit(studentId, contacts);
+        contactService.edit(gymId, contacts);
     }
 
     @ApiOperation(value = "delete the given set of contact ids")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @DeleteMapping
-    public void delete(@Valid @RequestParam(name = "contact_id") @NotEmpty final Set<@NotNull @Positive Long> contactIds, @ApiIgnore @UserId final Long studentId) {
+    public void delete(@Valid @RequestParam(name = "contact_id") @NotEmpty final Set<@NotNull @Positive Long> contactIds, @ApiIgnore @UserId final Long gymId) {
 
-        log.debug("deleteing contacts for student, {}. {}", studentId, contactIds);
+        log.debug("deleteing contacts for gym, {}. {}", gymId, contactIds);
 
-        contactService.delete(studentId, contactIds);
+        contactService.delete(gymId, contactIds);
     }
 
-    @ApiOperation(value = "get all contacts from student")
+    @ApiOperation(value = "get all contacts from gym")
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-    public Set<Contact> getAll(@ApiIgnore @UserId final Long studentId) {
+    public Set<Contact> getAll(@ApiIgnore @UserId final Long gymId) {
 
-        log.debug("getting all contacts for student, {}. {}", studentId);
+        log.debug("getting all contacts for gym, {}. {}", gymId);
 
-        return contactService.getAll(studentId);
+        return contactService.getAll(gymId);
     }
 
 }

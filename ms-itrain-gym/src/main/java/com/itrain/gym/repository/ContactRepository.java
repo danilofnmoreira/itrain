@@ -1,9 +1,9 @@
-package com.itrain.student.repository;
+package com.itrain.gym.repository;
 
-import com.itrain.student.domain.Contact;
+import com.itrain.gym.domain.Contact;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository(value = "student-contact-repository")
+@Repository(value = "gym-contact-repository")
 public interface ContactRepository extends JpaRepository<Contact, Long> { }

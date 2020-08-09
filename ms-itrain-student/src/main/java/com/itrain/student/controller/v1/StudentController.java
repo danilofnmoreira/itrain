@@ -29,7 +29,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 @Api(tags = { "student" })
 @RequestMapping(path = { "/api/v1/student" })
-@RestController
+@RestController(value = "student-controller")
 @RequiredArgsConstructor
 public class StudentController {
 

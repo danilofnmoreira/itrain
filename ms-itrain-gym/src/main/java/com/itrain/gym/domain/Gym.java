@@ -1,14 +1,18 @@
 package com.itrain.gym.domain;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -30,7 +34,6 @@ import com.itrain.common.converter.StringToLocalDatetimeConverter;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -42,28 +45,24 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(value = SnakeCaseStrategy.class)
 @JsonInclude(value = Include.NON_ABSENT)
-@Entity
+@Entity(name = "gym-entity")
 @Table(name = "`gym`")
 public class Gym {
 
     @JsonIgnore
-    @EqualsAndHashCode.Include
     @Id
     @Column(name = "`id`")
     private Long id;
 
     @JsonInclude(value = Include.NON_NULL)
-    @CollectionTable(name = "`gym_contact`", foreignKey = @ForeignKey(name = "`fk_gym_contact_gym_id`"))
-    @ElementCollection
+    @OneToMany(mappedBy = "gym", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private Set<Contact> contacts;
 
     @JsonInclude(value = Include.NON_NULL)
-    @CollectionTable(name = "`gym_address`", foreignKey = @ForeignKey(name = "`fk_gym_address_gym_id`"))
-    @ElementCollection
+    @OneToMany(mappedBy = "gym", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private Set<Address> addresses;
 
     @NotNull
@@ -99,5 +98,51 @@ public class Gym {
     @Size(max = 1000)
     @Column(name = "`sports`", length = 1000)
     private String sports;
+
+    public void addContacts(final Set<Contact> contacts) {
+
+        contacts.forEach(c -> c.setGym(this));
+
+        final var gymContacts = Objects.requireNonNullElse(this.getContacts(), new HashSet<Contact>());
+        gymContacts.addAll(contacts);
+
+        this.setContacts(gymContacts);
+
+    }
+
+    public void addAddresses(final Set<Address> addresses) {
+
+        addresses.forEach(a -> a.setGym(this));
+
+        final var gymAddresses = Objects.requireNonNullElse(this.getAddresses(), new HashSet<Address>());
+        gymAddresses.addAll(addresses);
+
+        this.setAddresses(gymAddresses);
+
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final Gym other = (Gym) obj;
+        if (id == null) {
+            return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
 
 }

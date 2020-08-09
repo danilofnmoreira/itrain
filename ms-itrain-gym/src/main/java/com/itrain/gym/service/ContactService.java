@@ -1,4 +1,4 @@
-package com.itrain.student.service;
+package com.itrain.gym.service;
 
 import java.util.Collections;
 import java.util.Set;
@@ -6,46 +6,46 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import com.itrain.student.domain.Contact;
-import com.itrain.student.repository.ContactRepository;
+import com.itrain.gym.domain.Contact;
+import com.itrain.gym.repository.ContactRepository;
 
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
-@Service(value = "student-contact-service")
+@Service(value = "gym-contact-service")
 @RequiredArgsConstructor
 public class ContactService {
 
-    private final StudentService studentService;
+    private final GymService gymService;
     private final ContactRepository contactRepository;
 
     @Transactional
-    public Set<Contact> add(final Long studentId, final Set<Contact> contacts) {
+    public Set<Contact> add(final Long gymId, final Set<Contact> contacts) {
 
-        final var student = studentService.findById(studentId);
+        final var gym = gymService.findById(gymId);
 
         contacts.forEach(c -> {
 
             c.setId(null);
 
-            c.addStudent(student);
+            c.addGym(gym);
 
         });
 
         contactRepository.saveAll(contacts);
 
-        studentService.save(student);
+        gymService.save(gym);
 
         return contacts;
     }
 
     @Transactional
-    public Set<Contact> edit(final Long studentId, final Set<Contact> contacts) {
+    public Set<Contact> edit(final Long gymId, final Set<Contact> contacts) {
 
-        final var student = studentService.findById(studentId);
+        final var gym = gymService.findById(gymId);
 
-        final var currentContacts = student.getContacts();
+        final var currentContacts = gym.getContacts();
 
         contacts.retainAll(currentContacts);
 
@@ -59,18 +59,18 @@ public class ContactService {
             .filter(c::equals)
             .forEach(cc -> cc.fillFrom(c)));
 
-        studentService.save(student);
+        gymService.save(gym);
 
         return contacts;
 
     }
 
     @Transactional
-	public Set<Contact> delete(final Long studentId, final Set<Long> contactIds) {
+	public Set<Contact> delete(final Long gymId, final Set<Long> contactIds) {
 
-        final var student = studentService.findById(studentId);
+        final var gym = gymService.findById(gymId);
 
-        final var currentContacts = student.getContacts();
+        final var currentContacts = gym.getContacts();
 
         final var toDelete = currentContacts
             .stream()
@@ -86,16 +86,16 @@ public class ContactService {
 
         currentContacts.removeAll(toDelete);
 
-        studentService.save(student);
+        gymService.save(gym);
 
         return toDelete;
 	}
 
-	public Set<Contact> getAll(Long studentId) {
+	public Set<Contact> getAll(Long gymId) {
 
-        final var student = studentService.findById(studentId);
+        final var gym = gymService.findById(gymId);
 
-        return student.getContacts();
+        return gym.getContacts();
 	}
 
 }

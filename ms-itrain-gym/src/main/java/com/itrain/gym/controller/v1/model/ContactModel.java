@@ -1,12 +1,13 @@
-package com.itrain.student.controller.v1.model;
+package com.itrain.gym.controller.v1.model;
 
-import java.util.Set;
-
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -26,12 +27,22 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(value = SnakeCaseStrategy.class)
 @JsonInclude(value = Include.NON_ABSENT)
-public class StudentModel {
+public class ContactModel {
 
-    @JsonInclude(value = Include.NON_NULL)
-    private Set<@NotNull ContactModel> contacts;
+    @Positive
+    private Long id;
 
-    @JsonInclude(value = Include.NON_NULL)
-    private Set<@NotNull AddressModel> addresses;
+    @Size(max = 500)
+    private String name;
+
+    @Email
+    @Size(max = 500)
+    private String email;
+
+    @Size(max = 50)
+    private String phone;
+
+    @JsonProperty(value = "is_whatsapp")
+    private Boolean whatsapp;
 
 }

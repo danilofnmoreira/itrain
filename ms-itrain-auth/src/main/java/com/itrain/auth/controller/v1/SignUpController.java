@@ -3,6 +3,7 @@ package com.itrain.auth.controller.v1;
 import javax.validation.Valid;
 
 import com.itrain.auth.controller.v1.request.signup.SignUpRequest;
+import com.itrain.auth.service.GymClientService;
 import com.itrain.auth.service.SignInService;
 import com.itrain.auth.service.SignUpService;
 import com.itrain.auth.service.StudentClientService;
@@ -32,6 +33,7 @@ public class SignUpController {
     private final SignUpService signUpService;
     private final SignInService signInService;
     private final StudentClientService studentClientService;
+    private final GymClientService gymClientService;
 
     @ApiOperation(value = "sign up the given user")
     @ResponseStatus(code = HttpStatus.CREATED)
@@ -54,6 +56,7 @@ public class SignUpController {
 
 			case GYM:
 
+            gymClientService.createStudent(request, token);
 				break;
 
 			case PERSONAL_TRAINER:

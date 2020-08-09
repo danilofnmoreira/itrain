@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
+@Service(value = "student-service")
 @RequiredArgsConstructor
 public class StudentService {
 
