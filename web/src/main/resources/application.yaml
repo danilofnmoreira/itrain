@@ -22,3 +22,5 @@ itrain:
     contact-site: https://itrain.com.br
     contact-email: bzappcomercial@gmail.com
     api-description: ITrain API for all
+  student:
+    base-url: http://localhost:5434
