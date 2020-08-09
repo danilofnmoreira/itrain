@@ -46,7 +46,7 @@ public class SecurityConfig {
     @Bean
     UserDetailsService userDetailsService(UserService userService) {
 
-        return username -> userService.findByUsername(username);
+        return userService::findByUsername;
     }
 
     @Configuration
