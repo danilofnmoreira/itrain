@@ -11,11 +11,11 @@ import com.fasterxml.jackson.databind.util.StdConverter;
 public class LocalDateTimeToStringConverter extends StdConverter<LocalDateTime, String> {
 
     @Override
-    public String convert(LocalDateTime value) {
+    public String convert(final LocalDateTime value) {
         if (Objects.isNull(value)) {
             return null;
         }
-        ZonedDateTime zonedDateTime = value.atZone(ZoneOffset.UTC);
+        final ZonedDateTime zonedDateTime = value.atZone(ZoneOffset.UTC);
         return zonedDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
     }
 

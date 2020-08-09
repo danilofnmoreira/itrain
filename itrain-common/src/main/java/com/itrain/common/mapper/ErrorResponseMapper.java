@@ -18,13 +18,13 @@ import lombok.NoArgsConstructor;
 public class ErrorResponseMapper {
 
     //@formatter:off
-    public static ErrorResponse createFrom(MethodArgumentNotValidException ex, HttpStatus status, String path) {
+    public static ErrorResponse createFrom(final MethodArgumentNotValidException ex, final HttpStatus status, final String path) {
 
-        var errors = ex.getBindingResult()
+        final var errors = ex.getBindingResult()
             .getFieldErrors()
             .stream()
             .map(e -> {
-                Map<String, Object> map = new HashMap<>();
+                final Map<String, Object> map = new HashMap<>();
                 map.put("error_message", e.getDefaultMessage());
                 map.put("rejected_value", e.getRejectedValue());
                 map.put("field",  e.getField());
@@ -36,18 +36,18 @@ public class ErrorResponseMapper {
     }
     //@formatter:on
 
-    public static ErrorResponse createFrom(HttpStatus status, String path) {
+    public static ErrorResponse createFrom(final HttpStatus status, final String path) {
 
         return createErrorResponse(status, path, "Unexpected error. Try it later.");
     }
 
-    public static ErrorResponse createFrom(Throwable ex, HttpStatus status, String path) {
+    public static ErrorResponse createFrom(final Throwable ex, final HttpStatus status, final String path) {
 
         return createErrorResponse(status, path, ex.getMessage());
     }
 
     //@formatter:off
-    private static ErrorResponse createErrorResponse(HttpStatus status, String path, String message, Set<Map<String, Object>> errors) {
+    private static ErrorResponse createErrorResponse(final HttpStatus status, final String path, final String message, final Set<Map<String, Object>> errors) {
 
         return ErrorResponse
             .builder()
@@ -61,7 +61,7 @@ public class ErrorResponseMapper {
     }
     //@formatter:on
 
-    private static ErrorResponse createErrorResponse(HttpStatus status, String path, String message) {
+    private static ErrorResponse createErrorResponse(final HttpStatus status, final String path, final String message) {
 
         return createErrorResponse(status, path, message, null);
     }

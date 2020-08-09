@@ -33,7 +33,7 @@ public class SignInController {
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @PostMapping(path = { "/signin" },
         consumes = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Object> signIn(@Valid @RequestBody UserCredentials credentials) {
+    public ResponseEntity<Object> signIn(@Valid @RequestBody final UserCredentials credentials) {
 
         log.debug("sign in user {}", credentials);
 

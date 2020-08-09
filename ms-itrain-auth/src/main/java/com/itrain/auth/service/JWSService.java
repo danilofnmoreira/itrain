@@ -33,11 +33,11 @@ public class JWSService {
     @Getter
     private long expirationTime;
 
-    void setSecret(String secret) {
+    void setSecret(final String secret) {
         this.signKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String createJws(User user) {
+    public String createJws(final User user) {
 
         return Jwts
             .builder()
@@ -50,7 +50,7 @@ public class JWSService {
             .compact();
     }
 
-    public Claims parseJws(String jws) {
+    public Claims parseJws(final String jws) {
 
         return Jwts
             .parserBuilder()
@@ -60,16 +60,16 @@ public class JWSService {
             .getBody();
     }
 
-    public String getSubject(Claims claims) {
+    public String getSubject(final Claims claims) {
         return claims.getSubject();
     }
 
-    public Long getUserId(Claims claims) {
+    public Long getUserId(final Claims claims) {
         return Long.parseLong(claims.get("uid").toString());
     }
 
     @SuppressWarnings(value = { "unchecked" })
-    public List<SimpleGrantedAuthority> getAuthorities(Claims claims) {
+    public List<SimpleGrantedAuthority> getAuthorities(final Claims claims) {
         return ((ArrayList<String>) claims.get("rol"))
             .stream()
             .map(SimpleGrantedAuthority::new)

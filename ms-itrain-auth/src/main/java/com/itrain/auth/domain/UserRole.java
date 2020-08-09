@@ -4,8 +4,8 @@ public enum UserRole {
 
     ROLE_USER, ROLE_ADMIN, ROLE_STUDENT, ROLE_GYM, ROLE_PERSONAL_TRAINER;
 
-    public static UserRole getByName(String name) {
-        for(var value : values()) {
+    public static UserRole getByName(final String name) {
+        for (final var value : values()) {
             if(value.name().equals(name)) {
                 return value;
             }

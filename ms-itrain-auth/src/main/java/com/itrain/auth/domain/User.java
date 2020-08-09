@@ -125,11 +125,11 @@ public class User implements UserDetails {
     @Column(name = "`profile_picture_url`", length = 2500)
     private String profilePictureUrl;
 
-    public void addRoles(Set<UserRole> roles) {
+    public void addRoles(final Set<UserRole> roles) {
 
-        var moreRoles = String.join(",", roles.stream().map(UserRole::name).collect(Collectors.toSet()));
+        final var moreRoles = String.join(",", roles.stream().map(UserRole::name).collect(Collectors.toSet()));
 
-        var currentRoles = Objects.requireNonNullElse(getRoles(), "");
+        final var currentRoles = Objects.requireNonNullElse(getRoles(), "");
 
         setRoles(currentRoles + "," + moreRoles);
     }

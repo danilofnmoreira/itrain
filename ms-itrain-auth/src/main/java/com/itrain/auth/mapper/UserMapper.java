@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserMapper {
 
-    public static User createFrom(SignUpRequest request) {
+    public static User createFrom(final SignUpRequest request) {
 
-		var credentials = request.getCredentials();
+		final var credentials = request.getCredentials();
 
 		return User
 			.builder()

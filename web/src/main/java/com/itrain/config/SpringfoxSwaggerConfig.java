@@ -27,7 +27,7 @@ public class SpringfoxSwaggerConfig {
 
     //@formatter:off
     @Bean
-    public Docket springfoxDocketApi(SpringfoxSwaggerProperties swaggerProps) {
+    public Docket springfoxDocketApi(final SpringfoxSwaggerProperties swaggerProps) {
         return new Docket(DocumentationType.SWAGGER_2)
             .groupName(swaggerProps.getContactName())
             .select()
@@ -41,7 +41,7 @@ public class SpringfoxSwaggerConfig {
     //@formatter:on
 
     //@formatter:off
-    private ApiInfo apiInfo(SpringfoxSwaggerProperties swaggerProps) {
+    private ApiInfo apiInfo(final SpringfoxSwaggerProperties swaggerProps) {
         return new ApiInfoBuilder()
             .title(swaggerProps.getAppName())
             .version(swaggerProps.getAppVersion())

@@ -21,30 +21,30 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface StudentV1Client {
 
     @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
-    Student createStudent(@RequestBody final Student student, @RequestHeader(name = HttpHeaders.AUTHORIZATION) final String auth);
+    Student createStudent(@RequestBody Student student, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String auth);
 
     @PostMapping(path = { "/addresses" }, consumes = { MediaType.APPLICATION_JSON_VALUE })
-    Set<Address> addAddresses(@RequestBody final Set<Address> models, @RequestHeader(name = HttpHeaders.AUTHORIZATION) final String auth);
+    Set<Address> addAddresses(@RequestBody Set<Address> models, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String auth);
 
     @PutMapping(path = { "/addresses" }, consumes = { MediaType.APPLICATION_JSON_VALUE })
-    void editAddresses(@RequestBody final Set<Address> models, @RequestHeader(name = HttpHeaders.AUTHORIZATION) final String auth);
+    void editAddresses(@RequestBody Set<Address> models, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String auth);
 
     @DeleteMapping(path = { "/addresses" })
-    void deleteAddresses(@RequestParam(name = "address_id") final Set<Long> addressIds, @RequestHeader(name = HttpHeaders.AUTHORIZATION) final String auth);
+    void deleteAddresses(@RequestParam(name = "address_id") Set<Long> addressIds, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String auth);
 
     @GetMapping(path = { "/addresses" })
-    Set<Address> getAllAddresses(@RequestHeader(name = HttpHeaders.AUTHORIZATION) final String auth);
+    Set<Address> getAllAddresses(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String auth);
 
     @PostMapping(path = { "/contacts" }, consumes = { MediaType.APPLICATION_JSON_VALUE })
-    Set<Contact> addContacts(@RequestBody final Set<Contact> models, @RequestHeader(name = HttpHeaders.AUTHORIZATION) final String auth);
+    Set<Contact> addContacts(@RequestBody Set<Contact> models, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String auth);
 
     @PutMapping(path = { "/contacts" }, consumes = { MediaType.APPLICATION_JSON_VALUE })
-    void editContacts(@RequestBody final Set<Contact> models, @RequestHeader(name = HttpHeaders.AUTHORIZATION) final String auth);
+    void editContacts(@RequestBody Set<Contact> models, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String auth);
 
     @DeleteMapping(path = { "/contacts" })
-    void deleteContacts(@RequestParam(name = "contact_id") final Set<Long> contactsIds, @RequestHeader(name = HttpHeaders.AUTHORIZATION) final String auth);
+    void deleteContacts(@RequestParam(name = "contact_id") Set<Long> contactsIds, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String auth);
 
     @GetMapping(path = { "/contacts" })
-    Set<Contact> getAllContacts(@RequestHeader(name = HttpHeaders.AUTHORIZATION) final String auth);
+    Set<Contact> getAllContacts(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String auth);
 
 }

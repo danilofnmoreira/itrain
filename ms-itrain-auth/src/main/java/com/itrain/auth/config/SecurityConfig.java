@@ -44,7 +44,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    UserDetailsService userDetailsService(UserService userService) {
+    UserDetailsService userDetailsService(final UserService userService) {
 
         return userService::findByUsername;
     }
@@ -60,7 +60,7 @@ public class SecurityConfig {
         private final ObjectMapper objectMapper;
 
         @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
 
             auth
                 .userDetailsService(userDetailsService)
@@ -68,7 +68,7 @@ public class SecurityConfig {
         }
 
         @Override
-        protected void configure(HttpSecurity http) throws Exception {
+        protected void configure(final HttpSecurity http) throws Exception {
 
             http
                 .csrf()
@@ -86,9 +86,9 @@ public class SecurityConfig {
                 .exceptionHandling()
                     .authenticationEntryPoint((request, response, authException) -> {
 
-                        var status = HttpStatus.UNAUTHORIZED;
-                        var errorResponse = ErrorResponseMapper.createFrom(authException, status, request.getRequestURI());
-                        var jsonResponse = objectMapper.writeValueAsString(errorResponse);
+                        final var status = HttpStatus.UNAUTHORIZED;
+                        final var errorResponse = ErrorResponseMapper.createFrom(authException, status, request.getRequestURI());
+                        final var jsonResponse = objectMapper.writeValueAsString(errorResponse);
                         response.setStatus(status.value());
                         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                         response.getWriter().write(jsonResponse);
@@ -98,17 +98,17 @@ public class SecurityConfig {
                 .addFilter(new BasicAuthenticationFilter(authenticationManager()) {
 
                     @Override
-                    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+                    protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
 
-                        var authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+                        final var authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
                         if (StringUtils.isBlank(authHeader) || !authHeader.startsWith(JWSService.TOKEN_PREFIX)) {
                             chain.doFilter(request, response);
                             return;
                         }
 
-                        var jws = authHeader.replace(JWSService.TOKEN_PREFIX, "");
-                        var claims = jwsService.parseJws(jws);
+                        final var jws = authHeader.replace(JWSService.TOKEN_PREFIX, "");
+                        final var claims = jwsService.parseJws(jws);
 
                         SecurityContextHolder
                             .getContext()
@@ -124,7 +124,7 @@ public class SecurityConfig {
         }
 
         @Override
-        public void configure(WebSecurity web) throws Exception {
+        public void configure(final WebSecurity web) throws Exception {
             web
                 .ignoring()
                     //swagger

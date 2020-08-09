@@ -26,36 +26,36 @@ import lombok.extern.log4j.Log4j2;
 public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex, final HttpHeaders headers, final HttpStatus status, final WebRequest request) {
 
-        var errorResponse = ErrorResponseMapper.createFrom(ex, status, getPath(request));
+        final var errorResponse = ErrorResponseMapper.createFrom(ex, status, getPath(request));
         logErrorResponse(errorResponse, ex);
         return new ResponseEntity<>(errorResponse, status);
     }
 
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = { Exception.class })
-    public ErrorResponse handleInternalServerErrorExceptions(Exception ex, WebRequest request) {
+    public ErrorResponse handleInternalServerErrorExceptions(final Exception ex, final WebRequest request) {
 
-        var errorResponse = ErrorResponseMapper.createFrom(HttpStatus.INTERNAL_SERVER_ERROR, getPath(request));
+        final var errorResponse = ErrorResponseMapper.createFrom(HttpStatus.INTERNAL_SERVER_ERROR, getPath(request));
         logErrorResponse(errorResponse, ex);
         return errorResponse;
     }
 
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = { NoSuchElementException.class })
-    public ErrorResponse handleNotFoundExceptions(Exception ex, WebRequest request) {
+    public ErrorResponse handleNotFoundExceptions(final Exception ex, final WebRequest request) {
 
-        var errorResponse = ErrorResponseMapper.createFrom(ex, HttpStatus.NOT_FOUND, getPath(request));
+        final var errorResponse = ErrorResponseMapper.createFrom(ex, HttpStatus.NOT_FOUND, getPath(request));
         logErrorResponse(errorResponse, ex);
         return errorResponse;
     }
 
     @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(value = { BadCredentialsException.class })
-    public ErrorResponse handleUnauthorizedExceptions(Exception ex, WebRequest request) {
+    public ErrorResponse handleUnauthorizedExceptions(final Exception ex, final WebRequest request) {
 
-        var errorResponse = ErrorResponseMapper.createFrom(ex, HttpStatus.UNAUTHORIZED, getPath(request));
+        final var errorResponse = ErrorResponseMapper.createFrom(ex, HttpStatus.UNAUTHORIZED, getPath(request));
         logErrorResponse(errorResponse, ex);
         return errorResponse;
     }
@@ -63,19 +63,19 @@ public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(code = HttpStatus.FORBIDDEN)
     @ExceptionHandler(value = { LockedException.class,
                                 DisabledException.class })
-    public ErrorResponse handleForbiddenExceptions(Exception ex, WebRequest request) {
+    public ErrorResponse handleForbiddenExceptions(final Exception ex, final WebRequest request) {
 
-        var errorResponse = ErrorResponseMapper.createFrom(ex, HttpStatus.FORBIDDEN, getPath(request));
+        final var errorResponse = ErrorResponseMapper.createFrom(ex, HttpStatus.FORBIDDEN, getPath(request));
         logErrorResponse(errorResponse, ex);
         return errorResponse;
     }
 
-    private void logErrorResponse(ErrorResponse errorResponse, Exception e) {
+    private void logErrorResponse(final ErrorResponse errorResponse, final Exception e) {
 
         log.error("Response for error\n---> {}", errorResponse, e);
     }
 
-    private String getPath(WebRequest request) {
+    private String getPath(final WebRequest request) {
 
         return ((ServletWebRequest) request).getRequest().getRequestURI();
     }

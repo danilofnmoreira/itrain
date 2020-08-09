@@ -23,14 +23,14 @@ public class SignInService {
 	private final AuthenticationManager authenticationManager;
 	private final JWSService jwsService;
 
-	public String signIn(UserCredentials credentials) {
+	public String signIn(final UserCredentials credentials) {
 
-		var authResult  = attemptAuthentication(credentials);
+		final var authResult  = attemptAuthentication(credentials);
 
 		return onSuccessfulAuthentication(authResult);
 	}
 
-    private Authentication attemptAuthentication(UserCredentials credentials) {
+    private Authentication attemptAuthentication(final UserCredentials credentials) {
 
         try {
             
@@ -40,7 +40,7 @@ public class SignInService {
                         credentials.getUsername(),
                         credentials.getPassword(),
                         Collections.emptyList()));
-        } catch (InternalAuthenticationServiceException e) {
+        } catch (final InternalAuthenticationServiceException e) {
 
             log.error(String.format("Error when authenticating user, %s", credentials.getUsername()), e);
 
@@ -52,11 +52,11 @@ public class SignInService {
         }
     }
 
-    private String onSuccessfulAuthentication(Authentication authResult) {
+    private String onSuccessfulAuthentication(final Authentication authResult) {
 
-        var user = (User) authResult.getPrincipal();
+        final var user = (User) authResult.getPrincipal();
 
-        var jws = jwsService.createJws(user);
+        final var jws = jwsService.createJws(user);
 
         return JWSService.TOKEN_PREFIX + jws;
 	}

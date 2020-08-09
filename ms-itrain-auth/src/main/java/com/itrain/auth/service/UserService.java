@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 
 import com.itrain.auth.domain.User;
 import com.itrain.auth.repository.UserRepository;
+import com.itrain.common.exception.DuplicateEntityException;
 
 import org.springframework.stereotype.Service;
 
@@ -16,19 +17,19 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User findByUsername(String username) {
+    public User findByUsername(final String username) {
 
         return userRepository.findByUsername(username).orElseThrow(() -> new NoSuchElementException(String.format("User, %s, not found.", username)));
     }
 
-    public User findById(Long id) {
+    public User findById(final Long id) {
 
         return userRepository.findById(id).orElseThrow(() -> new NoSuchElementException(String.format("User, %s, not found.", id)));
     }
 
-    public User save(User user) {
+    public User save(final User user) {
 
-        var now = LocalDateTime.now();
+        final var now = LocalDateTime.now();
 
         user.setRegisteredAt(now);
         user.setUpdatedAt(now);

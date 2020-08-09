@@ -17,24 +17,24 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 public class UserIdResolver implements HandlerMethodArgumentResolver {
 
     @Override
-    public boolean supportsParameter(MethodParameter parameter) {
+    public boolean supportsParameter(final MethodParameter parameter) {
 
         return findMethodAnnotation(UserId.class, parameter) != null;
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-            NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    public Object resolveArgument(final MethodParameter parameter, final ModelAndViewContainer mavContainer,
+            final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) throws Exception {
 
         try {
 
-            var principal = webRequest.getUserPrincipal();
-            var stringUserId = principal.getName();
+            final var principal = webRequest.getUserPrincipal();
+            final var stringUserId = principal.getName();
             return Long.valueOf(stringUserId);
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
 
-            var userIdAnnotation = findMethodAnnotation(UserId.class, parameter);
+            final var userIdAnnotation = findMethodAnnotation(UserId.class, parameter);
 
             Objects.requireNonNull(userIdAnnotation);
 
@@ -47,15 +47,15 @@ public class UserIdResolver implements HandlerMethodArgumentResolver {
 
     }
 
-    private <T extends Annotation> T findMethodAnnotation(Class<T> annotationClass, MethodParameter parameter) {
+    private <T extends Annotation> T findMethodAnnotation(final Class<T> annotationClass, final MethodParameter parameter) {
 
         T annotation = parameter.getParameterAnnotation(annotationClass);
         if (annotation != null) {
             return annotation;
         }
 
-        Annotation[] annotationsToSearch = parameter.getParameterAnnotations();
-        for (Annotation toSearch : annotationsToSearch) {
+        final Annotation[] annotationsToSearch = parameter.getParameterAnnotations();
+        for (final Annotation toSearch : annotationsToSearch) {
             annotation = AnnotationUtils.findAnnotation(toSearch.annotationType(), annotationClass);
             if (annotation != null) {
                 return annotation;
