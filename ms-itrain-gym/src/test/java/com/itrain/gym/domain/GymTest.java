@@ -1,13 +1,19 @@
 package com.itrain.gym.domain;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.sameInstance;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -144,4 +150,86 @@ class GymTest {
             contacts.forEach(c -> assertThat(c.getGym(), is(sameInstance(gym))));
         }
     }
+
+    @Nested
+    @DisplayName(value = "given a set of sport ids, it should be parsed and added to sport porperty in gym")
+    class given_a_set_of_sport_ids_it_should_be_parsed_and_added_to_sport_porperty_in_gym {
+
+        private Set<Long> sportsId = Set.of(3L, 4L, 5L);
+        private Gym gym;
+
+        @BeforeEach
+        void setUp() {
+
+            gym = new Gym();
+        }
+
+        @Test
+        @DisplayName(value = "if there are, already, some ids")
+        void if_there_are_already_some_ids() {
+
+            gym.setSports("1,2");
+
+            gym.addParsedSports(sportsId);
+
+            assertThat(gym.getSports(), is(equalTo("1,2,3,4,5")));
+        }
+
+        @Test
+        @DisplayName(value = "if there are not some ids")
+        void if_there_are_not_some_ids() {
+
+            gym.addParsedSports(sportsId);
+
+            assertThat(gym.getSports(), is(equalTo("3,4,5")));
+        }
+
+        @Test
+        @DisplayName(value = "if the given set of ids is null or empty, do nothing")
+        void if_the_given_set_of_ids_is_null_or_empty_do_nothing() {
+
+            gym.addParsedSports(null);
+
+            assertThat(gym.getSports(), is(nullValue()));
+
+            gym.addParsedSports(Collections.emptySet());
+
+            assertThat(gym.getSports(), is(nullValue()));
+        }
+    }
+
+    @Nested
+    @DisplayName(value = "when get parsed sports,")
+    class when_get_parsed_sports {
+
+        private Gym gym;
+
+        @BeforeEach
+        void setUp() {
+
+            gym = new Gym();
+        }
+
+        @Test
+        @DisplayName(value = "should return empty set if there are no sports")
+        void should_return_empty_set_if_there_are_no_sports() {
+
+            final var parsedSports = gym.getParsedSports();
+
+            assertThat(parsedSports, is(empty()));
+            assertThat(parsedSports, is(instanceOf(HashSet.class)));
+        }
+
+        @Test
+        @DisplayName(value = "should return filled collection")
+        void should_return_filled_collection() {
+
+            gym.setSports("1,2,3,4");
+
+            final var parsedSports = gym.getParsedSports();
+
+            assertThat(parsedSports, containsInAnyOrder(1L, 2L, 3L, 4L));
+        }
+    }
+
 }

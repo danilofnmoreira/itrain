@@ -6,11 +6,13 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
-import com.itrain.gym.domain.Address;
-import com.itrain.gym.domain.Gym;
-import com.itrain.gym.domain.Contact;
-import com.itrain.gym.repository.GymRepository;
+import javax.transaction.Transactional;
+
 import com.itrain.common.exception.DuplicateEntityException;
+import com.itrain.gym.domain.Address;
+import com.itrain.gym.domain.Contact;
+import com.itrain.gym.domain.Gym;
+import com.itrain.gym.repository.GymRepository;
 
 import org.springframework.stereotype.Service;
 
@@ -42,6 +44,7 @@ public class GymService {
         return gymRepository.findById(id);
     }
 
+    @Transactional
     public Gym create(final Gym gym) {
 
         if (gymRepository.existsById(gym.getId())) {

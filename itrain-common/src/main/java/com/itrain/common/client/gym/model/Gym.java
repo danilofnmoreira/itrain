@@ -34,6 +34,6 @@ public class Gym {
     private Set<String> galleryPicturesUrls;
     private String instagram;
     private String biography;
-    private String sports;
+    private Set<Long> sports;
 
 }

@@ -3,6 +3,7 @@ package com.itrain.gym.controller.v1.model;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -41,7 +42,6 @@ public class GymModel {
     @Size(max = 2000)
     private String biography;
 
-    @Size(max = 1000)
-    private String sports;
+    private Set<@NotNull @Positive Long> sports;
 
 }

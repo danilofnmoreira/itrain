@@ -6,11 +6,13 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
-import com.itrain.student.domain.Address;
-import com.itrain.student.domain.Student;
-import com.itrain.student.domain.Contact;
-import com.itrain.student.repository.StudentRepository;
+import javax.transaction.Transactional;
+
 import com.itrain.common.exception.DuplicateEntityException;
+import com.itrain.student.domain.Address;
+import com.itrain.student.domain.Contact;
+import com.itrain.student.domain.Student;
+import com.itrain.student.repository.StudentRepository;
 
 import org.springframework.stereotype.Service;
 
@@ -42,6 +44,7 @@ public class StudentService {
         return studentRepository.findById(id);
     }
 
+    @Transactional
     public Student create(final Student student) {
 
         if (studentRepository.existsById(student.getId())) {

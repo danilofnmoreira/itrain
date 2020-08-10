@@ -1,9 +1,11 @@
 package com.itrain.gym.domain;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -14,6 +16,7 @@ import javax.persistence.ForeignKey;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
@@ -24,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -31,6 +35,8 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itrain.common.converter.LocalDateTimeToStringConverter;
 import com.itrain.common.converter.StringToLocalDatetimeConverter;
+
+import org.apache.commons.lang3.StringUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -95,6 +101,7 @@ public class Gym {
     @Column(name = "`biography`", length = 2000)
     private String biography;
 
+    @JsonIgnore
     @Size(max = 1000)
     @Column(name = "`sports`", length = 1000)
     private String sports;
@@ -143,6 +150,39 @@ public class Gym {
         } else if (!id.equals(other.id))
             return false;
         return true;
+    }
+
+    @JsonProperty(value = "sports")
+    @Transient
+    public Set<Long> getParsedSports() {
+
+        final var currentSports = StringUtils.defaultString(getSports());
+
+        return StringUtils.isBlank(currentSports) ?
+            new HashSet<>() :
+            Arrays
+                .asList(currentSports.split(","))
+                .stream()
+                .map(Long::valueOf)
+                .collect(Collectors.toCollection(HashSet<Long>::new));
+    }
+
+    public void addParsedSports(final Set<Long> sportsId) {
+
+        if(sportsId == null || sportsId.isEmpty()) {
+            return;
+        }
+
+        final var strSet = sportsId
+            .stream()
+            .map(String::valueOf)
+            .collect(Collectors.toSet());
+
+        final var joined = String.join(",", strSet);
+
+        final var currentSports = StringUtils.defaultString(getSports());
+
+        setSports(StringUtils.isBlank(currentSports) ? currentSports.concat(joined) : currentSports.concat("," + joined));
     }
 
 }
