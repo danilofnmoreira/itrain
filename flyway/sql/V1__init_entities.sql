@@ -1,31 +1,172 @@
-create sequence "sq_sport_id" start 1 increment 1;
-create sequence "sq_user_id" start 1 increment 1;
-create table "client" ("registered_at" timestamp not null, "updated_at" timestamp not null, "id" int8 not null, primary key ("id"));
-create table "client_address" ("client_id" int8 not null, "city" varchar(300), "complement" varchar(300), "district" varchar(300), "federal_unit" varchar(300), "public_place" varchar(300), "zip_code" varchar(50));
-create table "client_contact" ("client_id" int8 not null, "email" varchar(500), "name" varchar(500), "phone" varchar(50), "is_whatsapp" boolean);
-create table "gym" ("biography" varchar(1000), "instagram" varchar(400), "registered_at" timestamp not null, "updated_at" timestamp not null, "id" int8 not null, primary key ("id"));
-create table "gym_address" ("gym_id" int8 not null, "city" varchar(300), "complement" varchar(300), "district" varchar(300), "federal_unit" varchar(300), "public_place" varchar(300), "zip_code" varchar(50));
-create table "gym_contact" ("gym_id" int8 not null, "email" varchar(500), "name" varchar(500), "phone" varchar(50), "is_whatsapp" boolean);
-create table "gym_gallery_picture" ("gym_id" int8 not null, "gallery_picture_url" varchar(400) not null, primary key ("gym_id", "gallery_picture_url"));
-create table "gym_sport" ("gym_id" int8 not null, "sport_id" int8 not null, primary key ("gym_id", "sport_id"));
-create table "personal_trainer" ("acting_city" varchar(300), "biography" varchar(1000), "instagram" varchar(400), "registered_at" timestamp not null, "updated_at" timestamp not null, "id" int8 not null, primary key ("id"));
-create table "personal_trainer_contact" ("personal_trainer_id" int8 not null, "email" varchar(500), "name" varchar(500), "phone" varchar(50), "is_whatsapp" boolean);
-create table "personal_trainer_gallery_picture" ("personal_trainer_id" int8 not null, "gallery_picture_url" varchar(400) not null, primary key ("personal_trainer_id", "gallery_picture_url"));
-create table "personal_trainer_sport" ("personal_trainer_id" int8 not null, "sport_id" int8 not null, primary key ("personal_trainer_id", "sport_id"));
-create table "sport" ("id" int8 not null, "name" varchar(400) not null, primary key ("id"));
-create table "user" ("id" int8 not null, "password" varchar(255) not null, "profile_picture_url" varchar(400), "registered_at" timestamp not null, "roles" varchar(255) not null, "updated_at" timestamp not null, "username" varchar(500) not null, primary key ("id"));
-alter table "user" add constraint "uq_user_username" unique ("username");
-alter table "client" add constraint "fk_client_id" foreign key ("id") references "user";
-alter table "client_address" add constraint "fk_client_address_client_id" foreign key ("client_id") references "client";
-alter table "client_contact" add constraint "fk_client_contact_client_id" foreign key ("client_id") references "client";
-alter table "gym" add constraint "fk_gym_id" foreign key ("id") references "user";
-alter table "gym_address" add constraint "fk_gym_address_gym_id" foreign key ("gym_id") references "gym";
-alter table "gym_contact" add constraint "fk_gym_contact_gym_id" foreign key ("gym_id") references "gym";
-alter table "gym_gallery_picture" add constraint "fk_gym_gallery_picture_gym_id" foreign key ("gym_id") references "gym";
-alter table "gym_sport" add constraint "fk_gym_sport_sport_id" foreign key ("sport_id") references "sport";
-alter table "gym_sport" add constraint "fk_gym_sport_gym_id" foreign key ("gym_id") references "gym";
-alter table "personal_trainer" add constraint "fk_personal_trainer_id" foreign key ("id") references "user";
-alter table "personal_trainer_contact" add constraint "fk_personal_trainer_contact_gym_id" foreign key ("personal_trainer_id") references "personal_trainer";
-alter table "personal_trainer_gallery_picture" add constraint "fk_personal_trainer_gallery_picture_personal_trainer_id" foreign key ("personal_trainer_id") references "personal_trainer";
-alter table "personal_trainer_sport" add constraint "fk_personal_trainer_sport_sport_id" foreign key ("sport_id") references "sport";
-alter table "personal_trainer_sport" add constraint "fk_personal_trainer_sport_personal_trainer_id" foreign key ("personal_trainer_id") references "personal_trainer";
+CREATE SEQUENCE "sq_gym_address_id"
+    START 1 INCREMENT 1;
+
+CREATE SEQUENCE "sq_gym_contact_id"
+    START 1 INCREMENT 1;
+
+CREATE SEQUENCE "sq_personal_trainer_address_id"
+    START 1 INCREMENT 1;
+
+CREATE SEQUENCE "sq_personal_trainer_contact_id"
+    START 1 INCREMENT 1;
+
+CREATE SEQUENCE "sq_sport_id"
+    START 1 INCREMENT 1;
+
+CREATE SEQUENCE "sq_student_address_id"
+    START 1 INCREMENT 1;
+
+CREATE SEQUENCE "sq_student_contact_id"
+    START 1 INCREMENT 1;
+
+CREATE SEQUENCE "sq_user_id"
+    START 1 INCREMENT 1;
+
+CREATE TABLE "gym" (
+    "id" INT8 NOT NULL,
+    "biography" VARCHAR(2000),
+    "instagram" VARCHAR(400),
+    "registered_at" TIMESTAMP NOT NULL,
+    "sports" VARCHAR(1000),
+    "updated_at" TIMESTAMP NOT NULL,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "gym_address" (
+    "id" INT8 NOT NULL,
+    "city" VARCHAR(300),
+    "complement" VARCHAR(300),
+    "district" VARCHAR(300),
+    "federal_unit" VARCHAR(300),
+    "public_place" VARCHAR(300),
+    "zip_code" VARCHAR(50),
+    "gym_id" INT8 NOT NULL,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "gym_contact" (
+    "id" INT8 NOT NULL,
+    "email" VARCHAR(500),
+    "name" VARCHAR(500),
+    "phone" VARCHAR(50),
+    "is_whatsapp" boolean,
+    "gym_id" INT8 NOT NULL,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "gym_gallery_picture" (
+    "gym-entity_id" INT8 NOT NULL,
+    "gallery_picture_url" VARCHAR(2500) NOT NULL,
+    PRIMARY KEY ("gym-entity_id", "gallery_picture_url")
+);
+
+CREATE TABLE "personal_trainer" (
+    "id" INT8 NOT NULL,
+    "biography" VARCHAR(2000),
+    "instagram" VARCHAR(400),
+    "registered_at" TIMESTAMP NOT NULL,
+    "sports" VARCHAR(1000),
+    "updated_at" TIMESTAMP NOT NULL,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "personal_trainer_address" (
+    "id" INT8 NOT NULL,
+    "city" VARCHAR(300),
+    "complement" VARCHAR(300),
+    "district" VARCHAR(300),
+    "federal_unit" VARCHAR(300),
+    "public_place" VARCHAR(300),
+    "zip_code" VARCHAR(50),
+    "personal_trainer_id" INT8 NOT NULL,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "personal_trainer_contact" (
+    "id" INT8 NOT NULL,
+    "email" VARCHAR(500),
+    "name" VARCHAR(500),
+    "phone" VARCHAR(50),
+    "is_whatsapp" boolean,
+    "personal_trainer_id" INT8 NOT NULL,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "personal_trainer_gallery_picture" (
+    "personal-trainer-entity_id" INT8 NOT NULL,
+    "gallery_picture_url" VARCHAR(2500) NOT NULL,
+    PRIMARY KEY ("personal-trainer-entity_id", "gallery_picture_url")
+);
+
+CREATE TABLE "sport" (
+    "id" INT8 NOT NULL,
+    "name" VARCHAR(400) NOT NULL,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "student" (
+    "id" INT8 NOT NULL,
+    "registered_at" TIMESTAMP NOT NULL,
+    "updated_at" TIMESTAMP NOT NULL,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "student_address" (
+    "id" INT8 NOT NULL,
+    "city" VARCHAR(300),
+    "complement" VARCHAR(300),
+    "district" VARCHAR(300),
+    "federal_unit" VARCHAR(300),
+    "public_place" VARCHAR(300),
+    "zip_code" VARCHAR(50),
+    "student_id" INT8 NOT NULL,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "student_contact" (
+    "id" INT8 NOT NULL,
+    "email" VARCHAR(500),
+    "name" VARCHAR(500),
+    "phone" VARCHAR(50),
+    "is_whatsapp" boolean,
+    "student_id" INT8 NOT NULL,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "user" (
+    "id" INT8 NOT NULL,
+    "password" VARCHAR(500) NOT NULL,
+    "profile_picture_url" VARCHAR(2500),
+    "registered_at" TIMESTAMP NOT NULL,
+    "roles" VARCHAR(255) NOT NULL,
+    "updated_at" TIMESTAMP NOT NULL,
+    "username" VARCHAR(500) NOT NULL,
+    PRIMARY KEY ("id")
+);
+
+ALTER TABLE IF EXISTS "user"
+    ADD CONSTRAINT "uq_user_username" UNIQUE ("username");
+
+ALTER TABLE IF EXISTS "gym_address"
+    ADD CONSTRAINT "fk_gym_address_gym_id" FOREIGN KEY ("gym_id") REFERENCES "gym";
+
+ALTER TABLE IF EXISTS "gym_contact"
+    ADD CONSTRAINT "fk_gym_contact_gym_id" FOREIGN KEY ("gym_id") REFERENCES "gym";
+
+ALTER TABLE IF EXISTS "gym_gallery_picture"
+    ADD CONSTRAINT "fk_gym_gallery_picture_gym_id" FOREIGN KEY ("gym-entity_id") REFERENCES "gym";
+
+ALTER TABLE IF EXISTS "personal_trainer_address"
+    ADD CONSTRAINT "fk_personal_trainer_address_personal_trainer_id" FOREIGN KEY ("personal_trainer_id") REFERENCES "personal_trainer";
+
+ALTER TABLE IF EXISTS "personal_trainer_contact"
+    ADD CONSTRAINT "fk_personal_trainer_contact_personal_trainer_id" FOREIGN KEY ("personal_trainer_id") REFERENCES "personal_trainer";
+
+ALTER TABLE IF EXISTS "personal_trainer_gallery_picture"
+    ADD CONSTRAINT "fk_personal_trainer_gallery_picture_personal_trainer_id" FOREIGN KEY ("personal-trainer-entity_id") REFERENCES "personal_trainer";
+
+ALTER TABLE IF EXISTS "student_address"
+    ADD CONSTRAINT "fk_student_address_student_id" FOREIGN KEY ("student_id") REFERENCES "student";
+
+ALTER TABLE IF EXISTS "student_contact"
+    ADD CONSTRAINT "fk_student_contact_student_id" FOREIGN KEY ("student_id") REFERENCES "student";
