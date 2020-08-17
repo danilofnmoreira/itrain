@@ -7,11 +7,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+import com.itrain.common.resolver.UserIdResolver.UserId;
 import com.itrain.gym.controller.v1.model.ContactModel;
 import com.itrain.gym.domain.Contact;
 import com.itrain.gym.mapper.ContactMapper;
 import com.itrain.gym.service.ContactService;
-import com.itrain.common.resolver.UserIdResolver.UserId;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -70,7 +69,7 @@ public class ContactController {
     @ApiOperation(value = "delete the given set of contact ids")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @DeleteMapping
-    public void delete(@Valid @RequestParam(name = "contact_id") @NotEmpty final Set<@NotNull @Positive Long> contactIds, @ApiIgnore @UserId final Long gymId) {
+    public void delete(@Valid @RequestBody @NotEmpty final Set<@NotNull @Positive Long> contactIds, @ApiIgnore @UserId final Long gymId) {
 
         log.debug("deleteing contacts for gym, {}. {}", gymId, contactIds);
 

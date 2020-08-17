@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "gym-client", url = "${itrain.gym.base-url}/api/v1/gym")
 public interface GymV1Client {
@@ -30,7 +29,7 @@ public interface GymV1Client {
     void editAddresses(@RequestBody Set<Address> models, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String auth);
 
     @DeleteMapping(path = { "/addresses" })
-    void deleteAddresses(@RequestParam(name = "address_id") Set<Long> addressIds, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String auth);
+    void deleteAddresses(@RequestBody Set<Long> addressIds, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String auth);
 
     @GetMapping(path = { "/addresses" })
     Set<Address> getAllAddresses(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String auth);
@@ -42,7 +41,7 @@ public interface GymV1Client {
     void editContacts(@RequestBody Set<Contact> models, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String auth);
 
     @DeleteMapping(path = { "/contacts" })
-    void deleteContacts(@RequestParam(name = "contact_id") Set<Long> contactsIds, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String auth);
+    void deleteContacts(@RequestBody Set<Long> contactsIds, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String auth);
 
     @GetMapping(path = { "/contacts" })
     Set<Contact> getAllContacts(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String auth);
