@@ -13,19 +13,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
-import org.apache.commons.lang3.BooleanUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,59 +38,62 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(value = SnakeCaseStrategy.class)
 @JsonInclude(value = Include.NON_ABSENT)
-@Entity(name = "personal-trainer-contact-entity")
-@Table(name = "`personal_trainer_contact`")
-public class Contact {
+@Entity(name = "personal-trainer-address-entity")
+@Table(name = "`personal_trainer_address`")
+public class Address {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_personal_trainer_contact_id")
-    @SequenceGenerator(name = "sq_personal_trainer_contact_id", sequenceName = "`sq_personal_trainer_contact_id`", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_personal_trainer_address_id")
+    @SequenceGenerator(name = "sq_personal_trainer_address_id", sequenceName = "`sq_personal_trainer_address_id`", allocationSize = 1)
     @Column(name = "`id`")
     private Long id;
 
-    @Size(max = 500)
-    @Column(name = "`name`", length = 500)
-    private String name;
-
-    @Email
-    @Size(max = 500)
-    @Column(name = "`email`", length = 500)
-    private String email;
-
     @Size(max = 50)
-    @Column(name = "`phone`", length = 50)
-    private String phone;
+    @Column(name = "`zip_code`", length = 50)
+    private String zipCode;
 
-    @JsonProperty(value = "is_whatsapp")
-    @Column(name = "`is_whatsapp`")
-    private Boolean whatsapp;
+    @Size(max = 300)
+    @Column(name = "`public_place`", length = 300)
+    private String publicPlace;
+
+    @Size(max = 300)
+    @Column(name = "`complement`", length = 300)
+    private String complement;
+
+    @Size(max = 300)
+    @Column(name = "`district`", length = 300)
+    private String district;
+
+    @Size(max = 300)
+    @Column(name = "`city`", length = 300)
+    private String city;
+
+    @Size(max = 300)
+    @Column(name = "`federal_unit`", length = 300)
+    private String federalUnit;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "`personal_trainer_id`", foreignKey = @ForeignKey(name = "`fk_personal_trainer_contact_personal_trainer_id`"), nullable = false, updatable = false)
+    @JoinColumn(name = "`personal_trainer_id`", foreignKey = @ForeignKey(name = "`fk_personal_trainer_address_personal_trainer_id`"), nullable = false, updatable = false)
     private PersonalTrainer personalTrainer;
 
-    public void fillFrom(final Contact contact) {
+    public void fillFrom(final Address address) {
 
-        setId(contact.getId());
-        setName(contact.getName());
-        setEmail(contact.getEmail());
-        setPhone(contact.getPhone());
-        setWhatsapp(contact.getWhatsapp());
-    }
-
-    @Transient
-    public boolean isWhatsapp() {
-
-        return BooleanUtils.toBoolean(whatsapp);
+        setId(address.getId());
+        setZipCode(address.getZipCode());
+        setPublicPlace(address.getPublicPlace());
+        setComplement(address.getComplement());
+        setDistrict(address.getDistrict());
+        setCity(address.getCity());
+        setFederalUnit(address.getFederalUnit());
     }
 
     public void addPersonalTrainer(final PersonalTrainer personalTrainer) {
 
         this.setPersonalTrainer(personalTrainer);
-        final var personalTrainerContacts = Objects.requireNonNullElse(this.getPersonalTrainer().getContacts(), new HashSet<Contact>());
-        personalTrainerContacts.add(this);
-        this.getPersonalTrainer().setContacts(personalTrainerContacts);
+        final var personalTrainerAddresses = Objects.requireNonNullElse(this.getPersonalTrainer().getAddresses(), new HashSet<Address>());
+        personalTrainerAddresses.add(this);
+        this.getPersonalTrainer().setAddresses(personalTrainerAddresses);
     }
 
     @Override
@@ -114,7 +112,7 @@ public class Contact {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final Contact other = (Contact) obj;
+        final Address other = (Address) obj;
         if (id == null) {
             return false;
         } else if (!id.equals(other.id))

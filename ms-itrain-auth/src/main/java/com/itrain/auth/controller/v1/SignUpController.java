@@ -22,6 +22,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import com.itrain.auth.service.PersonalTrainerClientService;
 
 @Api(tags = { "auth" })
 @RequestMapping(path = { "/api/v1" })
@@ -34,6 +35,7 @@ public class SignUpController {
     private final SignInService signInService;
     private final StudentClientService studentClientService;
     private final GymClientService gymClientService;
+    private final PersonalTrainerClientService personalTrainerClientService;
 
     @ApiOperation(value = "sign up the given user")
     @ResponseStatus(code = HttpStatus.CREATED)
@@ -56,11 +58,12 @@ public class SignUpController {
 
 			case GYM:
 
-            gymClientService.createStudent(request, token);
+                gymClientService.createGym(request, token);
 				break;
 
 			case PERSONAL_TRAINER:
 
+                personalTrainerClientService.createPersonalTrainer(request, token);
 				break;
         }
 
