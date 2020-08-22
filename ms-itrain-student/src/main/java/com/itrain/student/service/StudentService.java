@@ -1,6 +1,6 @@
 package com.itrain.student.service;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -26,7 +26,7 @@ public class StudentService {
 
     public Student save(final Student student) {
 
-        final var now = LocalDateTime.now();
+        final var now = ZonedDateTime.now();
 
         student.setRegisteredAt(now);
         student.setUpdatedAt(now);

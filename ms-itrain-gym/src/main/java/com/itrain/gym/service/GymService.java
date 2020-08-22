@@ -1,6 +1,6 @@
 package com.itrain.gym.service;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -26,7 +26,7 @@ public class GymService {
 
     public Gym save(final Gym gym) {
 
-        final var now = LocalDateTime.now();
+        final var now = ZonedDateTime.now();
 
         gym.setRegisteredAt(now);
         gym.setUpdatedAt(now);

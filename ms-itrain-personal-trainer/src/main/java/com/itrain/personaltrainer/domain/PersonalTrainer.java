@@ -1,6 +1,6 @@
 package com.itrain.personaltrainer.domain;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
@@ -22,19 +22,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.itrain.common.converter.LocalDateTimeToStringConverter;
-import com.itrain.common.converter.StringToLocalDatetimeConverter;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -73,19 +67,13 @@ public class PersonalTrainer {
 
     @NotNull
     @PastOrPresent
-    @JsonFormat(pattern = "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'", shape = Shape.STRING)
-    @JsonDeserialize(converter = StringToLocalDatetimeConverter.class)
-    @JsonSerialize(converter = LocalDateTimeToStringConverter.class)
     @Column(name = "`registered_at`", nullable = false, updatable = false)
-    private LocalDateTime registeredAt;
+    private ZonedDateTime registeredAt;
 
     @NotNull
     @PastOrPresent
-    @JsonFormat(pattern = "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'", shape = Shape.STRING)
-    @JsonDeserialize(converter = StringToLocalDatetimeConverter.class)
-    @JsonSerialize(converter = LocalDateTimeToStringConverter.class)
     @Column(name = "`updated_at`", nullable = false)
-    private LocalDateTime updatedAt;
+    private ZonedDateTime updatedAt;
 
     @JsonInclude(value = Include.NON_NULL)
     @CollectionTable(name = "`personal_trainer_gallery_picture`", foreignKey = @ForeignKey(name = "`fk_personal_trainer_gallery_picture_personal_trainer_id`"))

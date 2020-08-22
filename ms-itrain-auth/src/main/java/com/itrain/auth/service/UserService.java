@@ -1,6 +1,6 @@
 package com.itrain.auth.service;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.NoSuchElementException;
 
 import com.itrain.auth.domain.User;
@@ -29,7 +29,7 @@ public class UserService {
 
     public User save(final User user) {
 
-        final var now = LocalDateTime.now();
+        final var now = ZonedDateTime.now();
 
         user.setRegisteredAt(now);
         user.setUpdatedAt(now);

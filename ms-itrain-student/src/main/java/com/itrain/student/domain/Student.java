@@ -1,6 +1,6 @@
 package com.itrain.student.domain;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -14,18 +14,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.itrain.common.converter.LocalDateTimeToStringConverter;
-import com.itrain.common.converter.StringToLocalDatetimeConverter;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -62,19 +56,13 @@ public class Student {
 
     @NotNull
     @PastOrPresent
-    @JsonFormat(pattern = "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'", shape = Shape.STRING)
-    @JsonDeserialize(converter = StringToLocalDatetimeConverter.class)
-    @JsonSerialize(converter = LocalDateTimeToStringConverter.class)
     @Column(name = "`registered_at`", nullable = false, updatable = false)
-    private LocalDateTime registeredAt;
+    private ZonedDateTime registeredAt;
 
     @NotNull
     @PastOrPresent
-    @JsonFormat(pattern = "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'", shape = Shape.STRING)
-    @JsonDeserialize(converter = StringToLocalDatetimeConverter.class)
-    @JsonSerialize(converter = LocalDateTimeToStringConverter.class)
     @Column(name = "`updated_at`", nullable = false)
-    private LocalDateTime updatedAt;
+    private ZonedDateTime updatedAt;
 
     public void addContacts(final Set<Contact> contacts) {
 

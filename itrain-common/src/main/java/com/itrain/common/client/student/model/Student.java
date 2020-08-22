@@ -1,6 +1,6 @@
 package com.itrain.common.client.student.model;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,7 +29,7 @@ public class Student {
 
     private Set<Contact> contacts;
     private Set<Address> addresses;
-    private LocalDateTime registeredAt;
-    private LocalDateTime updatedAt;
+    private ZonedDateTime registeredAt;
+    private ZonedDateTime updatedAt;
 
 }

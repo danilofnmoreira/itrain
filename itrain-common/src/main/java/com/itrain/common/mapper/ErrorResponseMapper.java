@@ -1,6 +1,6 @@
 package com.itrain.common.mapper;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -51,7 +51,7 @@ public class ErrorResponseMapper {
 
         return ErrorResponse
             .builder()
-            .timestamp(LocalDateTime.now())
+            .timestamp(ZonedDateTime.now())
             .status(status.value())
             .statusError(status.getReasonPhrase())
             .path(path)

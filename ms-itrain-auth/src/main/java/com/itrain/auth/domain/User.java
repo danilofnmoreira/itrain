@@ -1,6 +1,6 @@
 package com.itrain.auth.domain;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -20,18 +22,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.itrain.common.converter.LocalDateTimeToStringConverter;
-import com.itrain.common.converter.StringToLocalDatetimeConverter;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -107,19 +103,13 @@ public class User implements UserDetails {
 
     @NotNull
     @PastOrPresent
-    @JsonFormat(pattern = "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'", shape = Shape.STRING)
-    @JsonDeserialize(converter = StringToLocalDatetimeConverter.class)
-    @JsonSerialize(converter = LocalDateTimeToStringConverter.class)
     @Column(name = "`registered_at`", nullable = false, updatable = false)
-    private LocalDateTime registeredAt;
+    private ZonedDateTime registeredAt;
 
     @NotNull
     @PastOrPresent
-    @JsonFormat(pattern = "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'", shape = Shape.STRING)
-    @JsonDeserialize(converter = StringToLocalDatetimeConverter.class)
-    @JsonSerialize(converter = LocalDateTimeToStringConverter.class)
     @Column(name = "`updated_at`", nullable = false)
-    private LocalDateTime updatedAt;
+    private ZonedDateTime updatedAt;
 
     @Size(max = 2500)
     @Column(name = "`profile_picture_url`", length = 2500)
@@ -141,5 +131,6 @@ public class User implements UserDetails {
 
         return AuthorityUtils.commaSeparatedStringToAuthorityList(getRoles());
     }
+
 
 }

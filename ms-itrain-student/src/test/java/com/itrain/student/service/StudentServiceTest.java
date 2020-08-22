@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -61,7 +61,7 @@ class StudentServiceTest {
     @DisplayName(value = "when creatin a student, should save it, if it does not exists")
     void when_creatin_a_student_should_save_it_if_it_does_not_exists() {
 
-        final var now = LocalDateTime.now();
+        final var now = ZonedDateTime.now();
 
         final var studentId = 1L;
 
@@ -97,7 +97,7 @@ class StudentServiceTest {
     @DisplayName(value = "when saving a student, should return it with properties create_at and updated_at filled with now value")
     void when_saving_a_student_should_return_it_with_properties_create_at_and_updated_at_filled_with_now_value() {
 
-        final var now = LocalDateTime.now();
+        final var now = ZonedDateTime.now();
 
         final var student = new Student();
 
