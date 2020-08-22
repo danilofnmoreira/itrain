@@ -1,1 +1,1 @@
-web: java -jar web/target/web.jar
+web: java $JAVA_OPTS -Duser.timezone=UTC -jar web/target/web.jar
