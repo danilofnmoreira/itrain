@@ -3,6 +3,7 @@ package com.itrain.gym.mapper;
 import java.util.Objects;
 
 import com.itrain.gym.controller.v1.model.GymModel;
+import com.itrain.gym.controller.v1.model.ProfileModel;
 import com.itrain.gym.domain.Gym;
 
 import lombok.AccessLevel;
@@ -44,4 +45,15 @@ public class GymMapper {
 
         return gym;
     }
+
+    public static Gym createFrom(final ProfileModel model, final Long gymId) {
+
+        return Gym
+            .builder()
+            .id(gymId)
+            .biography(model.getBiography())
+            .instagram(model.getInstagram())
+            .build();
+    }
+
 }

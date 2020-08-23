@@ -58,4 +58,22 @@ public class GymService {
         return save(gym);
     }
 
+    @Transactional
+    public Gym editProfile(final Gym gym) {
+
+        final var found = findById(gym.getId());
+
+        if(gym.getBiography() != null) {
+
+            found.setBiography(gym.getBiography());
+        }
+
+        if(gym.getInstagram() != null) {
+
+            found.setInstagram(gym.getInstagram());
+        }
+
+        return save(found);
+    }
+
 }

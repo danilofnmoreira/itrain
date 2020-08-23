@@ -1,9 +1,5 @@
 package com.itrain.gym.controller.v1.model;
 
-import java.util.Set;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -28,21 +24,12 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(value = SnakeCaseStrategy.class)
 @JsonInclude(value = Include.NON_ABSENT)
-public class GymModel {
-
-    @JsonInclude(value = Include.NON_NULL)
-    private Set<@NotNull ContactModel> contacts;
-
-    @JsonInclude(value = Include.NON_NULL)
-    private Set<@NotNull AddressModel> addresses;
-
-    @Size(max = 400)
-    private String instagram;
+public class ProfileModel {
 
     @Size(max = 2000)
     private String biography;
 
-    @JsonInclude(value = Include.NON_NULL)
-    private Set<@NotNull @Positive Long> sports;
+    @Size(max = 400)
+    private String instagram;
 
 }
