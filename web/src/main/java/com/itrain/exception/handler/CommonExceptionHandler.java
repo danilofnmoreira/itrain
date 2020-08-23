@@ -2,6 +2,7 @@ package com.itrain.exception.handler;
 
 import java.util.NoSuchElementException;
 
+import com.itrain.common.exception.DuplicateEntityException;
 import com.itrain.common.mapper.ErrorResponseMapper;
 import com.itrain.common.payload.ErrorResponse;
 
@@ -47,6 +48,15 @@ public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
     public ErrorResponse handleNotFoundExceptions(final Exception ex, final WebRequest request) {
 
         final var errorResponse = ErrorResponseMapper.createFrom(ex, HttpStatus.NOT_FOUND, getPath(request));
+        logErrorResponse(errorResponse, ex);
+        return errorResponse;
+    }
+
+    @ResponseStatus(code = HttpStatus.CONFLICT)
+    @ExceptionHandler(value = { DuplicateEntityException.class })
+    public ErrorResponse handleConflicExceptions(final Exception ex, final WebRequest request) {
+
+        final var errorResponse = ErrorResponseMapper.createFrom(ex, HttpStatus.CONFLICT, getPath(request));
         logErrorResponse(errorResponse, ex);
         return errorResponse;
     }
