@@ -29,11 +29,6 @@ public class UserService {
 
     public User save(final User user) {
 
-        final var now = ZonedDateTime.now();
-
-        user.setRegisteredAt(now);
-        user.setUpdatedAt(now);
-
         return userRepository.save(user);
     }
 
