@@ -1,6 +1,6 @@
 package com.itrain.auth.service;
 
-import java.util.Set;
+import java.util.HashSet;
 
 import javax.transaction.Transactional;
 
@@ -30,23 +30,28 @@ public class SignUpService {
 
 		user.setPassword(pwdEncoded);
 
+		final var roles = new HashSet<UserRole>();
+		roles.add(UserRole.ROLE_USER);
+
 		switch (request.getUserType()) {
 
 			case STUDENT:
 
-				user.addRoles(Set.of(UserRole.ROLE_STUDENT, UserRole.ROLE_USER));
+				roles.add(UserRole.ROLE_STUDENT);
 				break;
 
 			case GYM:
 
-				user.addRoles(Set.of(UserRole.ROLE_GYM, UserRole.ROLE_USER));
+				roles.add(UserRole.ROLE_GYM);
 				break;
 
 			case PERSONAL_TRAINER:
 
-				user.addRoles(Set.of(UserRole.ROLE_PERSONAL_TRAINER, UserRole.ROLE_USER));
+				roles.add(UserRole.ROLE_PERSONAL_TRAINER);
 				break;
 		}
+
+		user.addRoles(roles);
 
 		return userService.create(user);
 	}
