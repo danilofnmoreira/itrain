@@ -49,6 +49,10 @@ public class SignUpRequest {
     @NotNull
     private UserType userType;
 
+    @ApiModelProperty(example = "ABCD1234")
+    @Size(max = 50)
+    private String promotionalCode;
+
     public enum UserType {
         STUDENT, GYM, PERSONAL_TRAINER
     }
