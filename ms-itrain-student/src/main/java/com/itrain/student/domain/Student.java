@@ -1,6 +1,6 @@
 package com.itrain.student.domain;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -21,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,6 +33,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@EntityListeners(value = { AuditingEntityListener.class })
 @Getter
 @Setter
 @ToString
@@ -57,12 +63,16 @@ public class Student {
     @NotNull
     @PastOrPresent
     @Column(name = "`registered_at`", nullable = false, updatable = false)
-    private ZonedDateTime registeredAt;
+    @JsonIgnore
+    @CreatedDate
+    private LocalDateTime registeredAt;
 
     @NotNull
     @PastOrPresent
     @Column(name = "`updated_at`", nullable = false)
-    private ZonedDateTime updatedAt;
+    @JsonIgnore
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
     public void addContacts(final Set<Contact> contacts) {
 

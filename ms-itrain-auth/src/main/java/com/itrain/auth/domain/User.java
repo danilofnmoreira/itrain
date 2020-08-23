@@ -1,6 +1,6 @@
 package com.itrain.auth.domain;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
@@ -37,20 +37,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners(value = { AuditingEntityListener.class })
 @Getter
 @Setter
 @ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(value = SnakeCaseStrategy.class)
 @JsonInclude(value = Include.NON_ABSENT)
@@ -83,7 +81,6 @@ public class User implements UserDetails {
     @JsonIgnore
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_user_id")
     @SequenceGenerator(name = "sq_user_id", sequenceName = "`sq_user_id`", allocationSize = 1)
-    @EqualsAndHashCode.Include
     @Column(name = "`id`")
     private Long id;
 
@@ -107,14 +104,16 @@ public class User implements UserDetails {
     @NotNull
     @PastOrPresent
     @Column(name = "`registered_at`", nullable = false, updatable = false)
+    @JsonIgnore
     @CreatedDate
-    private ZonedDateTime registeredAt;
+    private LocalDateTime registeredAt;
 
     @NotNull
     @PastOrPresent
     @Column(name = "`updated_at`", nullable = false)
+    @JsonIgnore
     @LastModifiedDate
-    private ZonedDateTime updatedAt;
+    private LocalDateTime updatedAt;
 
     @Size(max = 2500)
     @Column(name = "`profile_picture_url`", length = 2500)
@@ -137,5 +136,28 @@ public class User implements UserDetails {
         return AuthorityUtils.commaSeparatedStringToAuthorityList(getRoles());
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        User other = (User) obj;
+        if (id == null) {
+            return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
 
 }

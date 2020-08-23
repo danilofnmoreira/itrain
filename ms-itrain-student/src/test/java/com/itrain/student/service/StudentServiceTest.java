@@ -2,24 +2,17 @@ package com.itrain.student.service;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.time.ZonedDateTime;
-import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import com.itrain.student.domain.Address;
-import com.itrain.student.domain.Student;
-import com.itrain.student.domain.Contact;
-import com.itrain.student.repository.StudentRepository;
 import com.itrain.common.exception.DuplicateEntityException;
+import com.itrain.student.domain.Student;
+import com.itrain.student.repository.StudentRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -55,58 +48,6 @@ class StudentServiceTest {
         final var actual = assertThrows(DuplicateEntityException.class, () -> studentService.create(student));
 
         assertThat(actual.getMessage(), is(equalTo(expected.getMessage())));
-    }
-
-    @Test
-    @DisplayName(value = "when creatin a student, should save it, if it does not exists")
-    void when_creatin_a_student_should_save_it_if_it_does_not_exists() {
-
-        final var now = ZonedDateTime.now();
-
-        final var studentId = 1L;
-
-        final var addresses = new HashSet<Address>();
-        addresses.add(Address.builder().id(1L).build());
-        addresses.add(Address.builder().id(1L).build());
-
-        final var contacts = new HashSet<Contact>();
-        contacts.add(Contact.builder().id(1L).build());
-        contacts.add(Contact.builder().id(1L).build());
-
-        final var student = Student
-            .builder()
-            .id(studentId)
-            .addresses(addresses)
-            .contacts(contacts)
-            .build();
-
-        when(studentRepository.existsById(studentId)).thenReturn(false);
-        when(studentRepository.save(student)).thenReturn(student);
-
-        final var actual = studentService.create(student);
-
-        assertThat(actual.getRegisteredAt(), is(greaterThanOrEqualTo(now)));
-        assertThat(actual.getUpdatedAt(), is(greaterThanOrEqualTo(now)));
-        assertThat(actual.getAddresses(), hasSize(2));
-        assertThat(actual.getContacts(), hasSize(2));
-        actual.getAddresses().forEach(a -> assertThat(a.getId(), is(nullValue())));
-        actual.getContacts().forEach(c -> assertThat(c.getId(), is(nullValue())));
-    }
-
-    @Test
-    @DisplayName(value = "when saving a student, should return it with properties create_at and updated_at filled with now value")
-    void when_saving_a_student_should_return_it_with_properties_create_at_and_updated_at_filled_with_now_value() {
-
-        final var now = ZonedDateTime.now();
-
-        final var student = new Student();
-
-        when(studentService.save(student)).thenReturn(student);
-
-        final var actual = studentService.save(student);
-
-        assertThat(actual.getRegisteredAt(), is(greaterThanOrEqualTo(now)));
-        assertThat(actual.getUpdatedAt(), is(greaterThanOrEqualTo(now)));
     }
 
     @Nested

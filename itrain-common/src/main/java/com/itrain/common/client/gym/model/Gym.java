@@ -1,6 +1,5 @@
 package com.itrain.common.client.gym.model;
 
-import java.time.ZonedDateTime;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,8 +28,6 @@ public class Gym {
 
     private Set<Contact> contacts;
     private Set<Address> addresses;
-    private ZonedDateTime registeredAt;
-    private ZonedDateTime updatedAt;
     private Set<String> galleryPicturesUrls;
     private String instagram;
     private String biography;

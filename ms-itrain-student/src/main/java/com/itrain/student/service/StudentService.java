@@ -1,6 +1,5 @@
 package com.itrain.student.service;
 
-import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -25,11 +24,6 @@ public class StudentService {
     private final StudentRepository studentRepository;
 
     public Student save(final Student student) {
-
-        final var now = ZonedDateTime.now();
-
-        student.setRegisteredAt(now);
-        student.setUpdatedAt(now);
 
         return studentRepository.save(student);
     }

@@ -1,6 +1,5 @@
 package com.itrain.auth.service;
 
-import java.time.ZonedDateTime;
 import java.util.NoSuchElementException;
 
 import com.itrain.auth.domain.User;

@@ -1,6 +1,5 @@
 package com.itrain.common.client.student.model;
 
-import java.time.ZonedDateTime;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,7 +28,5 @@ public class Student {
 
     private Set<Contact> contacts;
     private Set<Address> addresses;
-    private ZonedDateTime registeredAt;
-    private ZonedDateTime updatedAt;
 
 }

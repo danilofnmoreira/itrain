@@ -1,6 +1,6 @@
 package com.itrain.gym.domain;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
@@ -12,6 +12,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.ForeignKey;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -25,12 +26,15 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,6 +43,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@EntityListeners(value = { AuditingEntityListener.class })
 @Getter
 @Setter
 @ToString
@@ -68,12 +73,16 @@ public class Gym {
     @NotNull
     @PastOrPresent
     @Column(name = "`registered_at`", nullable = false, updatable = false)
-    private ZonedDateTime registeredAt;
+    @JsonIgnore
+    @CreatedDate
+    private LocalDateTime registeredAt;
 
     @NotNull
     @PastOrPresent
     @Column(name = "`updated_at`", nullable = false)
-    private ZonedDateTime updatedAt;
+    @JsonIgnore
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
     @JsonInclude(value = Include.NON_NULL)
     @CollectionTable(name = "`gym_gallery_picture`", foreignKey = @ForeignKey(name = "`fk_gym_gallery_picture_gym_id`"))

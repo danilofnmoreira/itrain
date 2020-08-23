@@ -1,6 +1,5 @@
 package com.itrain.personaltrainer.service;
 
-import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -25,11 +24,6 @@ public class PersonalTrainerService {
     private final PersonalTrainerRepository personalTrainerRepository;
 
     public PersonalTrainer save(final PersonalTrainer personalTrainer) {
-
-        final var now = ZonedDateTime.now();
-
-        personalTrainer.setRegisteredAt(now);
-        personalTrainer.setUpdatedAt(now);
 
         return personalTrainerRepository.save(personalTrainer);
     }
