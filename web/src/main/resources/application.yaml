@@ -30,3 +30,10 @@ itrain:
     base-url: ${ITRAIN_PERSONAL_TRAINER_BASE_URL}
   sport:
     base-url: ${ITRAIN_SPORT_BASE_URL}
+
+sendgrid:
+  api-key: ${SENDGRID_API_KEY}
+  from-name: ${SENDGRID_FROM_NAME}
+  from-email: ${SENDGRID_FROM_EMAIL}
+  signup-template-id: ${SENDGRID_SIGNUP_TEMPLATE_ID}
+  signup-base-url-confirmation-link: ${SENDGRID_SIGNUP_BASE_URL_CONFIRMATION_LINK}
