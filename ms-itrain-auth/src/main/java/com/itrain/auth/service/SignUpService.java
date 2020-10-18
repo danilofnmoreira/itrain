@@ -79,6 +79,8 @@ public class SignUpService {
 	@Async
 	public void sendEmailConfirmation(final SignUpRequest signUpRequest, final String token) {
 
+		var jws = token.replace(JWSService.TOKEN_PREFIX, "");
+
 		var to = new Email(signUpRequest.getEmail(), signUpRequest.getName());
 
 		var mail = new Mail();
@@ -88,7 +90,7 @@ public class SignUpService {
 		var personalization = new Personalization();
 		personalization.addDynamicTemplateData("subject", SIGN_UP_EMAIL_SUBJECT);
 		personalization.addDynamicTemplateData("user_name", signUpRequest.getName());
-		personalization.addDynamicTemplateData("confirm_link", signupBaseUrlConfirmationLink + "?token=" + token);
+		personalization.addDynamicTemplateData("confirm_link", signupBaseUrlConfirmationLink + "?token=" + jws);
 		personalization.addTo(to);
 
 		mail.addPersonalization(personalization);
