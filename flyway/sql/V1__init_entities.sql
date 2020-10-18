@@ -49,7 +49,7 @@ CREATE TABLE "gym_contact" (
     "email" VARCHAR(500),
     "name" VARCHAR(500),
     "phone" VARCHAR(50),
-    "is_whatsapp" boolean,
+    "is_whatsapp" BOOLEAN,
     "gym_id" INT8 NOT NULL,
     PRIMARY KEY ("id")
 );
@@ -87,7 +87,7 @@ CREATE TABLE "personal_trainer_contact" (
     "email" VARCHAR(500),
     "name" VARCHAR(500),
     "phone" VARCHAR(50),
-    "is_whatsapp" boolean,
+    "is_whatsapp" BOOLEAN,
     "personal_trainer_id" INT8 NOT NULL,
     PRIMARY KEY ("id")
 );
@@ -128,7 +128,7 @@ CREATE TABLE "student_contact" (
     "email" VARCHAR(500),
     "name" VARCHAR(500),
     "phone" VARCHAR(50),
-    "is_whatsapp" boolean,
+    "is_whatsapp" BOOLEAN,
     "student_id" INT8 NOT NULL,
     PRIMARY KEY ("id")
 );

@@ -64,7 +64,7 @@ public class User implements UserDetails {
 
     @JsonIgnore
     @Builder.Default
-    @Transient
+    @Column(name = "`account_non_locked`", nullable = false)
     private boolean accountNonLocked = true;
 
     @JsonIgnore
