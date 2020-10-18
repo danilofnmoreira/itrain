@@ -6,6 +6,7 @@ import com.itrain.auth.domain.User;
 import com.itrain.auth.repository.UserRepository;
 import com.itrain.common.exception.DuplicateEntityException;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,24 @@ public class UserService {
         }
 
         return save(user);
+    }
+
+    @Async
+    public void unlockUser(final Long userId) {
+
+        var user = findById(userId);
+        user.setAccountNonLocked(true);
+
+        save(user);
+    }
+
+    @Async
+    public void lockUser(final Long userId) {
+
+        var user = findById(userId);
+        user.setAccountNonLocked(false);
+
+        save(user);
     }
 
 }

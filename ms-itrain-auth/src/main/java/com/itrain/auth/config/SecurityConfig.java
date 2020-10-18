@@ -80,7 +80,7 @@ public class SecurityConfig {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                     .authorizeRequests()
-                        .antMatchers("/api/*/signin", "/api/*/signup").permitAll()
+                        .antMatchers("/api/*/signin", "/api/*/signup", "/api/*/confirm-signup").permitAll()
                         .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
