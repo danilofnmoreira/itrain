@@ -16,6 +16,7 @@ import com.itrain.common.resolver.UserIdResolver.UserId;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,6 +55,14 @@ public class StudentController {
         final var student = StudentMapper.createNullSafeFrom(model, studentId);
 
         return studentService.create(student);
+    }
+
+    @ApiOperation(value = "get complete student properties")
+    @ResponseStatus(code = HttpStatus.OK)
+    @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
+    public Student find(@ApiIgnore @UserId final Long studentId) {
+
+        return studentService.findById(studentId);
     }
 
 }

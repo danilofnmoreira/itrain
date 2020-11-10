@@ -16,6 +16,7 @@ import com.itrain.personaltrainer.service.PersonalTrainerService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,6 +55,14 @@ public class PersonalTrainerController {
         final var personalTrainer = PersonalTrainerMapper.createNullSafeFrom(model, personalTrainerId);
 
         return personalTrainerService.create(personalTrainer);
+    }
+
+    @ApiOperation(value = "get complete personal trainer properties")
+    @ResponseStatus(code = HttpStatus.OK)
+    @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
+    public PersonalTrainer find(@ApiIgnore @UserId final Long personalTrainerId) {
+
+        return personalTrainerService.findById(personalTrainerId);
     }
 
 }

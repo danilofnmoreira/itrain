@@ -16,6 +16,7 @@ import com.itrain.gym.service.GymService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,6 +55,14 @@ public class GymController {
         final var gym = GymMapper.createNullSafeFrom(model, gymId);
 
         return gymService.create(gym);
+    }
+
+    @ApiOperation(value = "get complete gym properties")
+    @ResponseStatus(code = HttpStatus.OK)
+    @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
+    public Gym find(@ApiIgnore @UserId final Long gymId) {
+
+        return gymService.findById(gymId);
     }
 
 }
